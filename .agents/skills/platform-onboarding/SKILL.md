@@ -71,7 +71,7 @@ Update `roles/scan/tasks/main.yaml` to include the new platform:
 ```yaml
 - name: Include platform-specific scan tasks
   ansible.builtin.include_tasks:
-    file: "{{ compliance_platform }}.yaml"
+    file: "{{ scan_platform }}.yaml"
 ```
 
 ### Step 3: Create evaluate task structure

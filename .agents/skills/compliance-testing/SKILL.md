@@ -74,7 +74,7 @@ Each contains: `molecule.yaml`, `converge.yaml`, `verify.yaml`, and optionally `
 ### Key files
 
 - **molecule.yaml** — Driver (`default`/delegated), inventory, test sequence
-- **converge.yaml** — Apply the role with `stig_controls`, `compliance_framework`, etc.
+- **converge.yaml** — Apply the role with `compliance`, `stig_controls`, etc.
 - **verify.yaml** — Assert `stig_results` is populated with valid statuses
 - **prepare.yaml** — Pre-populate mock data (e.g., `stig_results` for remediate testing)
 

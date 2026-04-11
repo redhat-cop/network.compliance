@@ -26,7 +26,7 @@ Severity: CAT I (high/critical), CAT II (medium), CAT III (low). Updated quarter
 | CIS Benchmarks | Voluntary | Less granular, no V-key traceability |
 | NIST 800-53 | Federal (FISMA) | Control families, not device-specific |
 
-STIG selected because: mandatory for largest customer base, most granular (per-device controls), existing tooling ecosystem, and CCI crosswalk covers NIST 800-53. The `compliance_framework` dispatch pattern supports adding CIS later.
+STIG selected because: mandatory for largest customer base, most granular (per-device controls), existing tooling ecosystem, and CCI crosswalk covers NIST 800-53. The `compliance.framework` dispatch pattern supports adding CIS later.
 
 ### STIG Manager Integration
 

@@ -111,9 +111,10 @@ scenario:
         auth_hostmode: single-host
       V-220650:
         run: true
-    compliance_cat1_evaluate: true
-    compliance_cat2_evaluate: true
-    compliance_cat3_evaluate: false
+    compliance_evaluate:
+      cat1: true
+      cat2: true
+      cat3: false
   roles:
     - network.compliance.evaluate
 ```
@@ -220,7 +221,7 @@ Include `idempotence` in `test_sequence`. Molecule re-runs converge and fails if
   tasks:
     - name: Read generated CKLB file
       ansible.builtin.slurp:
-        src: "{{ compliance_report_output_path }}"
+        src: "{{ compliance_report.output_dir }}/{{ inventory_hostname }}.cklb"
       register: _cklb_raw
     - name: Parse CKLB JSON
       ansible.builtin.set_fact:
@@ -241,8 +242,9 @@ Include `idempotence` in `test_sequence`. Molecule re-runs converge and fails if
   hosts: stig_targets
   gather_facts: false
   vars:
-    compliance_framework: stig
-    compliance_platform: ios
+    compliance:
+      framework: stig
+      platform: ios
   tasks:
     - ansible.builtin.include_role:
         name: network.compliance.scan

@@ -40,7 +40,7 @@ Implement the four-phase lifecycle (scan, evaluate, remediate, report) for the C
 
 | File | Purpose |
 |------|---------|
-| `roles/scan/tasks/main.yaml` | Derive `compliance_platform` from `ansible_network_os`, dispatch to `<platform>.yaml` |
+| `roles/scan/tasks/main.yaml` | Derive `scan_platform` from `compliance.platform` or `ansible_network_os`, dispatch to `<platform>.yaml` |
 | `roles/scan/tasks/ios.yaml` | `cisco.ios.ios_facts` with `gather_network_resources: [l2_interfaces]`, classify ports |
 | `roles/scan/defaults/main.yaml` | Default variable values |
 | `roles/scan/meta/argument_specs.yml` | Variable documentation |
@@ -215,7 +215,7 @@ Report generation uses `to_cklb` and `to_xccdf` filter plugins instead of Jinja2
       {{ stig_results | network.compliance.to_cklb(
            rules=stig_rules, hostname=inventory_hostname,
            ip_address=ansible_host) }}
-    dest: "{{ compliance_report_output_dir }}/{{ inventory_hostname }}.cklb"
+    dest: "{{ compliance_report.output_dir }}/{{ inventory_hostname }}.cklb"
   when: compliance_report.format in ['cklb', 'both']
 
 - name: Generate XCCDF report
@@ -224,7 +224,7 @@ Report generation uses `to_cklb` and `to_xccdf` filter plugins instead of Jinja2
       {{ stig_results | network.compliance.to_xccdf(
            rules=stig_rules, hostname=inventory_hostname,
            ip_address=ansible_host) }}
-    dest: "{{ compliance_report_output_dir }}/{{ inventory_hostname }}_xccdf.xml"
+    dest: "{{ compliance_report.output_dir }}/{{ inventory_hostname }}_xccdf.xml"
   when: compliance_report.format in ['xccdf', 'both']
 ```
 
@@ -257,7 +257,7 @@ Phase 1 (scaffolding)
 
 - [ ] `ansible-galaxy collection build` succeeds
 - [ ] `ansible-lint roles/` passes production profile
-- [ ] All four roles dispatch by `compliance_framework` and `compliance_platform`
+- [ ] All four roles dispatch by `compliance.framework` and `compliance.platform`
 - [ ] Evaluate works in `check_mode`, remediate is idempotent
 - [ ] `stig_results` dict populated by evaluate, consumed by remediate and report
 - [ ] All 9 rules evaluated and remediable for Cisco IOS
