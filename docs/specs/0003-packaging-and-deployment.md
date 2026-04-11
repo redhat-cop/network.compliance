@@ -29,7 +29,7 @@ dependencies:
 1. Add dependency to `galaxy.yml`
 2. Create scan tasks: `roles/scan/tasks/<platform>.yaml`
 3. Create evaluate/remediate directories under `stig/<platform>/`
-4. Map STIG rules to platform modules (resource modules preferred)
+4. Map STIG rules to platform command/config modules
 5. Add Molecule scenarios
 6. Update supported platforms table in docs
 

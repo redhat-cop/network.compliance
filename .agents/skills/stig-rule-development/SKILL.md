@@ -201,6 +201,5 @@ molecule test -s evaluate-stig-<platform>
 
 ## References
 
-- [references/resource-modules.md](references/resource-modules.md) — Cross-platform module table and state reference
 - [references/evaluation-examples.md](references/evaluation-examples.md) — Building block filter examples and fact_diff approach
 - [DISA STIG Library](https://public.cyber.mil/stigs/)
