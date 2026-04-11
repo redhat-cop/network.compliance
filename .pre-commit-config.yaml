@@ -1,0 +1,43 @@
+---
+ci:
+  autoupdate_schedule: quarterly
+  skip:
+    - mypy
+    - pylint
+    - ruff
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: [--branch, main]
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+        exclude: "galaxy.yml"
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.12
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.27.2
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/ansible/ansible-lint
+    rev: v25.5.0
+    hooks:
+      - id: ansible-lint
+        additional_dependencies:
+          - ansible-core>=2.15

@@ -1,0 +1,20 @@
+class-map match-all C2_VOICE
+ match ip dscp 47
+class-map match-all VOICE
+ match ip dscp ef
+class-map match-all VIDEO
+ match ip dscp af41
+class-map match-all PREFERRED_DATA
+ match ip dscp af33
+!
+policy-map QOS_POLICY_SWITCHPORT
+ class C2_VOICE
+  priority level 1 10
+ class VOICE
+  priority level 2 15
+ class VIDEO
+  bandwidth percent 25
+ class PREFERRED_DATA
+  bandwidth percent 25
+ class class-default
+  bandwidth percent 25

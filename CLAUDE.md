@@ -1,2 +1,2 @@
 - @AGENTS.md
-- @skills/
+- @.agents/skills/

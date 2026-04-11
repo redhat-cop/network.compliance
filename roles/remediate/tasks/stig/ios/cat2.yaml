@@ -1,0 +1,123 @@
+---
+# CAT II — Medium Severity
+
+# V-220650: VTP password
+- name: >-
+    STIG | CISC-L2-000030 | V-220650 | CAT-II |
+    Configure VTP password
+  when:
+    - stig_controls['V-220650'].run | default(false)
+    - stig_results['V-220650'].status | default('not_reviewed') == 'open'
+    - stig_controls['V-220650'].vtp_password is defined
+  tags:
+    - CISC-L2-000030
+    - V-220650
+    - SV-220650r539671
+    - cat2
+    - CCI-001967
+  cisco.ios.ios_config:
+    lines:
+      - "vtp password {{ stig_controls['V-220650'].vtp_password }}"
+    save_when: changed
+  no_log: true
+
+# V-220651: DoS protection via QoS service-policy
+- name: >-
+    STIG | CISC-L2-000040 | V-220651 | CAT-II |
+    Configure QoS policy-map
+  when:
+    - stig_controls['V-220651'].run | default(false)
+    - stig_results['V-220651'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000040
+    - V-220651
+    - SV-220651r1107171
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220651_qos.j2
+    save_when: changed
+
+- name: >-
+    STIG | CISC-L2-000040 | V-220651 | CAT-II |
+    Apply QoS service-policy to access ports
+  when:
+    - stig_controls['V-220651'].run | default(false)
+    - stig_results['V-220651'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000040
+    - V-220651
+    - cat2
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220651_service_policy.j2
+    save_when: changed
+
+# V-220656: BPDU Guard on access ports
+- name: >-
+    STIG | CISC-L2-000100 | V-220656 | CAT-II |
+    Configure BPDU Guard on access ports
+  when:
+    - stig_controls['V-220656'].run | default(false)
+    - stig_results['V-220656'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000100
+    - V-220656
+    - SV-220656r856278
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220656.j2
+    save_when: changed
+
+# V-220657: STP Loop Guard (global)
+- name: >-
+    STIG | CISC-L2-000110 | V-220657 | CAT-II |
+    Enable STP Loop Guard globally
+  when:
+    - stig_controls['V-220657'].run | default(false)
+    - stig_results['V-220657'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000110
+    - V-220657
+    - SV-220657r856279
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    lines:
+      - spanning-tree loopguard default
+    save_when: changed
+
+# V-220665: UDLD (global)
+- name: >-
+    STIG | CISC-L2-000190 | V-220665 | CAT-II |
+    Enable UDLD globally
+  when:
+    - stig_controls['V-220665'].run | default(false)
+    - stig_results['V-220665'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000190
+    - V-220665
+    - SV-220665r539671
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    lines:
+      - udld enable
+    save_when: changed
+
+# V-220666: DTP disabled on trunk ports
+- name: >-
+    STIG | CISC-L2-000200 | V-220666 | CAT-II |
+    Disable DTP on trunk ports
+  when:
+    - stig_controls['V-220666'].run | default(false)
+    - stig_results['V-220666'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000200
+    - V-220666
+    - SV-220666r539671
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220666.j2
+    save_when: changed

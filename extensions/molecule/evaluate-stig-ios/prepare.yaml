@@ -1,0 +1,20 @@
+---
+- name: Prepare mock scan output for evaluation
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Seed compliance port lists (simulates scan role output)
+      ansible.builtin.set_fact:
+        compliance_access_ports:
+          - name: GigabitEthernet0/1
+            mode: access
+          - name: GigabitEthernet0/2
+            mode: access
+        compliance_voice_ports:
+          - name: GigabitEthernet0/3
+            mode: access
+            voice:
+              vlan: 100
+        compliance_trunk_ports:
+          - name: GigabitEthernet0/48
+            mode: trunk

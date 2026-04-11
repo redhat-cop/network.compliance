@@ -1,0 +1,8 @@
+{% for port in compliance_access_ports %}
+interface {{ port.name }}
+ service-policy output QOS_POLICY_SWITCHPORT
+{% endfor %}
+{% for port in compliance_trunk_ports | default([]) %}
+interface {{ port.name }}
+ service-policy output QOS_POLICY_SWITCHPORT
+{% endfor %}

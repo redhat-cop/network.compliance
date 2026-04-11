@@ -1,0 +1,8 @@
+{% for port in compliance_access_ports %}
+interface {{ port.name }}
+ spanning-tree bpduguard enable
+{% endfor %}
+{% for port in compliance_voice_ports | default([]) %}
+interface {{ port.name }}
+ spanning-tree bpduguard enable
+{% endfor %}

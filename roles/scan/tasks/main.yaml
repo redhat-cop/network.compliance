@@ -1,0 +1,9 @@
+---
+- name: Resolve target platform
+  ansible.builtin.set_fact:
+    scan_platform: >-
+      {{ compliance.platform | default(ansible_network_os | split('.') | last) }}
+
+- name: Include platform-specific scan tasks
+  ansible.builtin.include_tasks:
+    file: "{{ scan_platform }}.yaml"

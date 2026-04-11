@@ -1,0 +1,21 @@
+---
+- name: Prepare mock evaluation results for report generation
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Seed stig_results with mixed findings
+      ansible.builtin.set_fact:
+        stig_results:
+          V-220649:
+            status: not_a_finding
+            findings: []
+            detail: "All access ports have 802.1x configured"
+          V-220656:
+            status: open
+            findings:
+              - GigabitEthernet0/2
+            detail: "Missing BPDU Guard on: GigabitEthernet0/2"
+          V-220657:
+            status: not_a_finding
+            findings: []
+            detail: "STP Loop Guard is enabled globally"

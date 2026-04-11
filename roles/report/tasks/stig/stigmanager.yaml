@@ -1,0 +1,23 @@
+---
+- name: Submit results to STIG Manager API
+  ansible.builtin.uri:
+    url: "{{ compliance_stigmanager.url }}/api/collections/{{ compliance_stigmanager.collection_id }}/reviews"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ compliance_stigmanager.token }}"
+    body_format: json
+    body:
+      dryRun: "{{ compliance_stigmanager.dryrun | default(false) }}"
+      source:
+        review:
+          result: "{{ stig_results }}"
+    status_code: [200, 201]
+  delegate_to: localhost
+  no_log: true
+  register: _report_stigmanager_response
+
+- name: Log STIG Manager submission result
+  ansible.builtin.debug:
+    msg: >-
+      STIG Manager API response: {{ _report_stigmanager_response.status }}
+      (dryRun={{ compliance_stigmanager.dryrun | default(false) }})

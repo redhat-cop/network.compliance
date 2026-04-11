@@ -1,0 +1,27 @@
+---
+driver:
+  name: default
+
+platforms:
+  - name: mock-ios-01
+    groups:
+      - ios_switches
+
+provisioner:
+  name: ansible
+  inventory:
+    hosts:
+      all:
+        hosts:
+          mock-ios-01:
+            ansible_host: localhost
+            ansible_connection: local
+            ansible_network_os: cisco.ios.ios
+
+scenario:
+  test_sequence:
+    - dependency
+    - syntax
+    - prepare
+    - converge
+    - verify

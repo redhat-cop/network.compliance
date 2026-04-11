@@ -1,0 +1,16 @@
+---
+- name: Verify - Remediate role applied fixes for open findings
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Assert stig_results still available after remediation
+      ansible.builtin.assert:
+        that:
+          - stig_results is defined
+        fail_msg: "stig_results not available after remediation"
+
+    - name: Assert compliant rules were not touched
+      ansible.builtin.assert:
+        that:
+          - stig_results['V-220649'].status == 'not_a_finding'
+        fail_msg: "Compliant rule V-220649 should not have been modified"

@@ -1,0 +1,25 @@
+---
+- name: Verify - Evaluate role populates stig_results correctly
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Assert stig_results is populated
+      ansible.builtin.assert:
+        that:
+          - stig_results is defined
+          - stig_results is mapping
+          - stig_results | length > 0
+        fail_msg: "stig_results was not populated by the evaluate role"
+
+    - name: Assert each evaluated rule has valid structure
+      ansible.builtin.assert:
+        that:
+          - stig_results[item].status in ['not_a_finding', 'open']
+          - stig_results[item].findings is defined
+          - stig_results[item].findings is sequence
+          - stig_results[item].detail is defined
+          - stig_results[item].detail is string
+        fail_msg: "Invalid stig_results structure for {{ item }}"
+      loop: "{{ stig_results.keys() | list }}"
+      loop_control:
+        label: "{{ item }}"

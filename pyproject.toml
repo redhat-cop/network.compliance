@@ -1,0 +1,56 @@
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+fix = true
+cache-dir = ".cache/.ruff"
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "S",    # flake8-bandit (security)
+  "D",    # pydocstyle
+  "C4",   # flake8-comprehensions
+  "SIM",  # flake8-simplify
+  "RUF",  # ruff-specific rules
+]
+ignore = [
+  "E501",   # line length handled by formatter
+  "D100",   # missing module docstring (filter module files are documented via YAML sidecar)
+  "D104",   # missing package docstring (__init__.py files)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ansible_collections.network.compliance"]
+lines-after-imports = 2
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+  "S101",   # assert allowed in tests
+  "S106",   # pass_msg parameter triggers false positive for hardcoded password
+  "D",      # no docstring requirements for tests
+]
+"plugins/filter/__init__.py" = ["D"]
+
+[tool.pytest.ini_options]
+addopts = ["-vvv", "--color", "yes"]
+testpaths = ["tests"]
+filterwarnings = [
+  "ignore::DeprecationWarning:ansible.*",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["plugins"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

@@ -1,0 +1,11 @@
+---
+blank_issues_enabled: true
+contact_links:
+  - name: Ansible Code of Conduct
+    url: https://docs.ansible.com/ansible/latest/community/code_of_conduct.html
+    about: >-
+      The network.compliance collection follows the Ansible Code of Conduct.
+  - name: DISA STIG Library
+    url: https://public.cyber.mil/stigs/
+    about: >-
+      Reference STIG guides for network devices.

@@ -1,0 +1,27 @@
+---
+- name: Converge - Full STIG compliance workflow
+  hosts: all
+  gather_facts: false
+  vars:
+    compliance:
+      framework: stig
+      platform: ios
+    compliance_report:
+      format: both
+      output_dir: /tmp/molecule_workflow_reports
+  tasks:
+    - name: Phase 1 - Scan
+      ansible.builtin.include_role:
+        name: network.compliance.scan
+
+    - name: Phase 2 - Evaluate
+      ansible.builtin.include_role:
+        name: network.compliance.evaluate
+
+    - name: Phase 3 - Remediate
+      ansible.builtin.include_role:
+        name: network.compliance.remediate
+
+    - name: Phase 4 - Report
+      ansible.builtin.include_role:
+        name: network.compliance.report

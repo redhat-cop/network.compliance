@@ -1,0 +1,46 @@
+DOCUMENTATION:
+  name: to_cklb
+  version_added: "0.1.0"
+  short_description: Generate CKLB JSON from STIG evaluation results
+  author: Ansible Network Team
+  description:
+    - Produces a DISA STIG Viewer compatible checklist (CKLB) JSON file
+      from the C(stig_results) and C(stig_rules) data structures.
+    - Rules not present in C(stig_results) are reported as C(not_reviewed).
+  positional: _input, rules, hostname
+  options:
+    _input:
+      description: The C(stig_results) dict keyed by V-key.
+      type: dict
+      required: true
+    rules:
+      description: The C(stig_rules) metadata dict keyed by V-key.
+      type: dict
+      required: true
+    hostname:
+      description: Target device hostname.
+      type: str
+      required: true
+    ip_address:
+      description: Target device IP address.
+      type: str
+      default: ""
+    comment:
+      description: Comment to include in each rule entry.
+      type: str
+      default: "Evaluated by network.compliance"
+
+EXAMPLES: |
+
+  # Generate CKLB report and write to file
+  # - ansible.builtin.copy:
+  #     content: "{{ stig_results | network.compliance.to_cklb(
+  #         rules=stig_rules,
+  #         hostname=inventory_hostname,
+  #         ip_address=ansible_host) }}"
+  #     dest: "/tmp/reports/{{ inventory_hostname }}.cklb"
+
+RETURN:
+  _value:
+    description: CKLB JSON string ready for STIG Viewer import.
+    type: str

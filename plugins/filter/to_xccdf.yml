@@ -1,0 +1,48 @@
+DOCUMENTATION:
+  name: to_xccdf
+  version_added: "0.1.0"
+  short_description: Generate XCCDF XML from STIG evaluation results
+  author: Ansible Network Team
+  description:
+    - Produces NIST XCCDF 1.2 XML with STIG Manager namespace extensions
+      from the C(stig_results) and C(stig_rules) data structures.
+    - Includes C(sm:detail) and C(sm:resultEngine) elements for
+      compatibility with STIG Manager and stigman-watcher.
+    - Rules not present in C(stig_results) are reported as C(notchecked).
+  positional: _input, rules, hostname
+  options:
+    _input:
+      description: The C(stig_results) dict keyed by V-key.
+      type: dict
+      required: true
+    rules:
+      description: The C(stig_rules) metadata dict keyed by V-key.
+      type: dict
+      required: true
+    hostname:
+      description: Target device hostname.
+      type: str
+      required: true
+    ip_address:
+      description: Target device IP address.
+      type: str
+      default: ""
+    collection_version:
+      description: Collection version string for the result engine metadata.
+      type: str
+      default: "0.1.0"
+
+EXAMPLES: |
+
+  # Generate XCCDF report and write to file
+  # - ansible.builtin.copy:
+  #     content: "{{ stig_results | network.compliance.to_xccdf(
+  #         rules=stig_rules,
+  #         hostname=inventory_hostname,
+  #         ip_address=ansible_host) }}"
+  #     dest: "/tmp/reports/{{ inventory_hostname }}_xccdf.xml"
+
+RETURN:
+  _value:
+    description: XCCDF 1.2 XML string with STIG Manager namespace extensions.
+    type: str

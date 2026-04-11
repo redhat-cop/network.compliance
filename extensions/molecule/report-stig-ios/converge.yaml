@@ -1,0 +1,13 @@
+---
+- name: Converge - Run report role on mock IOS device
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: network.compliance.report
+      vars:
+        compliance:
+          framework: stig
+          platform: ios
+        compliance_report:
+          format: both
+          output_dir: /tmp/molecule_compliance_reports

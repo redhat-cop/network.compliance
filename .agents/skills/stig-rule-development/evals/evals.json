@@ -1,0 +1,43 @@
+{
+  "skill_name": "stig-rule-development",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement STIG rule V-220656 (CISC-L2-000100, CAT-II, BPDU Guard) for Cisco IOS. The check content says: 'Review the switch configuration to verify BPDU guard is enabled on all access ports.' The fix text says: 'Configure spanning-tree bpduguard enable on all access switch ports.'",
+      "expected_output": "Rule metadata added to rules.yaml, evaluation task using evaluate_results filter in cat2.yaml, remediation task gated on stig_results status in cat2.yaml, remediation template with spanning-tree bpduguard enable per port, argument_specs updated.",
+      "assertions": [
+        "Rule metadata exists in roles/evaluate/vars/stig/rules.yaml with V-220656 as key",
+        "Evaluation task uses cisco.ios.ios_command to check interface config",
+        "Evaluation task uses network.compliance.evaluate_results filter",
+        "Task name follows 'STIG | CISC-L2-000100 | V-220656 | CAT-II | ...' format",
+        "Tags include CISC-L2-000100, V-220656, cat2",
+        "Remediation task is conditional on stig_results['V-220656'].status == 'open'",
+        "Remediation uses ios_config with save_when: changed",
+        "Remediation template contains spanning-tree bpduguard enable",
+        "No hardcoded interface names in tasks or templates"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add STIG rule V-220657 (CISC-L2-000110, CAT-II, STP Loop Guard) for IOS. Check: 'Verify the switch has STP Loop Guard enabled.' Fix: 'Configure spanning-tree loopguard default.' This is a global config, not per-interface.",
+      "expected_output": "Rule metadata in rules.yaml, evaluation task checking global config, inline remediation (no template needed for global config), argument_specs updated.",
+      "assertions": [
+        "Rule metadata exists in rules.yaml with V-220657 as key",
+        "Evaluation task does NOT loop over interfaces (global check)",
+        "Remediation uses ios_config with lines, not src/template",
+        "Remediation is conditional on stig_results['V-220657'].status == 'open'",
+        "Task has correct STIG naming and tags"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to add a new STIG rule but I only have the V-key: V-220662. Can you look up the details and implement it?",
+      "expected_output": "Agent should ask for or look up the STIG ID, severity, CCI, check content, and fix text before implementation. Should not guess metadata.",
+      "assertions": [
+        "Agent requests or gathers the missing STIG metadata before implementing",
+        "Agent does not fabricate STIG IDs, CCIs, or check/fix text",
+        "If implemented, follows the standard 2-task evaluation pattern"
+      ]
+    }
+  ]
+}

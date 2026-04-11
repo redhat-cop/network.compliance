@@ -1,0 +1,54 @@
+---
+name: Feature Request
+description: "Suggest a new feature or enhancement"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests help us understand what functionality would be valuable.
+        Please check the existing issues and docs/specs/ before submitting.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: Briefly describe the feature you'd like to see.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: components
+    attributes:
+      label: Select the relevant components
+      options:
+        - label: New STIG Rule
+        - label: New Platform Support
+        - label: New Compliance Framework (CIS, etc.)
+        - label: Enhancement to Existing Role
+        - label: New Filter Plugin
+        - label: Report Format Enhancement
+        - label: AAP/Workflow Integration
+        - label: Documentation
+        - label: Testing
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Network Platform (if applicable)
+      options:
+        - Cisco IOS / IOS-XE
+        - Cisco NX-OS
+        - Juniper JunOS
+        - Arista EOS
+        - Other
+        - Not platform-specific
+    validations:
+      required: false
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use Case
+      description: Describe the use case or problem this feature would solve.
+    validations:
+      required: false

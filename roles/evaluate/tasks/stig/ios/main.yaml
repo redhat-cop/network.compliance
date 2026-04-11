@@ -1,0 +1,21 @@
+---
+- name: Include CAT I evaluation
+  ansible.builtin.include_tasks:
+    file: cat1.yaml
+  when: compliance_evaluate.cat1 | default(true)
+  tags:
+    - cat1
+
+- name: Include CAT II evaluation
+  ansible.builtin.include_tasks:
+    file: cat2.yaml
+  when: compliance_evaluate.cat2 | default(true)
+  tags:
+    - cat2
+
+- name: Include CAT III evaluation
+  ansible.builtin.include_tasks:
+    file: cat3.yaml
+  when: compliance_evaluate.cat3 | default(true)
+  tags:
+    - cat3

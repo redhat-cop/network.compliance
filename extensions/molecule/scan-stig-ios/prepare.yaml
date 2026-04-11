@@ -1,0 +1,28 @@
+---
+- name: Prepare mock L2 interface facts
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Seed mock ios_facts network resources
+      ansible.builtin.set_fact:
+        ansible_facts:
+          network_resources:
+            l2_interfaces:
+              - name: GigabitEthernet0/1
+                mode: access
+                access:
+                  vlan: 10
+              - name: GigabitEthernet0/2
+                mode: access
+                access:
+                  vlan: 10
+              - name: GigabitEthernet0/3
+                mode: access
+                access:
+                  vlan: 20
+                voice:
+                  vlan: 100
+              - name: GigabitEthernet0/48
+                mode: trunk
+                trunk:
+                  native_vlan: 33

@@ -1,0 +1,18 @@
+{
+  "skill_name": "platform-onboarding",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add support for Arista EOS to the network.compliance collection. The ansible_network_os is arista.eos.eos and the collection is arista.eos.",
+      "expected_output": "Updated galaxy.yml with arista.eos dependency, scan task for EOS using eos_facts, evaluate/remediate directory structure under stig/eos/, Molecule scenarios, and updated supported platforms table.",
+      "assertions": [
+        "galaxy.yml has arista.eos dependency added",
+        "roles/scan/tasks/eos.yaml exists and uses arista.eos.eos_facts",
+        "roles/evaluate/tasks/stig/eos/ directory structure created with main.yaml",
+        "roles/remediate/tasks/stig/eos/ directory structure created",
+        "Molecule scenario scan-eos or evaluate-stig-eos created",
+        "README.md supported platforms table updated with EOS"
+      ]
+    }
+  ]
+}

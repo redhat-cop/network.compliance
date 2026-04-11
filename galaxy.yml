@@ -1,0 +1,33 @@
+---
+namespace: network
+name: compliance
+version: 0.1.0
+readme: README.md
+authors:
+  - Ansible Network Team
+description: >-
+  Ansible Validated Content for STIG compliance evaluation and
+  remediation of network devices.
+license:
+  - GPL-3.0-or-later
+license_file: ""
+tags:
+  - stig
+  - compliance
+  - security
+  - networking
+  - cisco
+  - ios
+dependencies:
+  cisco.ios: ">=8.0.0"
+  ansible.netcommon: ">=6.0.0"
+  ansible.utils: ">=4.0.0"
+repository: ""
+documentation: ""
+homepage: ""
+issues: ""
+build_ignore:
+  - .agents
+  - docs
+  - changelogs/fragments/.gitkeep
+  - "*.tar.gz"

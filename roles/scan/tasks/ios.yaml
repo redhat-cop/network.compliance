@@ -1,0 +1,38 @@
+---
+- name: Gather L2 interface facts
+  cisco.ios.ios_facts:
+    gather_subset:
+      - "!all"
+      - "!min"
+    gather_network_resources:
+      - l2_interfaces
+  register: _scan_l2_facts
+
+- name: Set all L2 ports from gathered facts
+  ansible.builtin.set_fact:
+    scan_all_l2_ports: >-
+      {{ _scan_l2_facts.ansible_facts.network_resources.l2_interfaces | default([]) }}
+
+- name: Classify access ports (mode=access, no voice VLAN)
+  ansible.builtin.set_fact:
+    compliance_access_ports: >-
+      {{ scan_all_l2_ports
+         | selectattr('mode', 'defined')
+         | selectattr('mode', 'equalto', 'access')
+         | rejectattr('voice', 'defined')
+         | list }}
+
+- name: Classify voice ports (voice VLAN defined)
+  ansible.builtin.set_fact:
+    compliance_voice_ports: >-
+      {{ scan_all_l2_ports
+         | selectattr('voice', 'defined')
+         | list }}
+
+- name: Classify trunk ports (mode=trunk)
+  ansible.builtin.set_fact:
+    compliance_trunk_ports: >-
+      {{ scan_all_l2_ports
+         | selectattr('mode', 'defined')
+         | selectattr('mode', 'equalto', 'trunk')
+         | list }}

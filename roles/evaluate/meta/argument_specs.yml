@@ -1,0 +1,57 @@
+---
+argument_specs:
+  main:
+    short_description: Evaluate STIG compliance on network devices
+    description: >-
+      Phase 2 of the compliance lifecycle. Audits device configuration
+      against STIG controls and populates stig_results dict consumed
+      by remediate and report roles. Works in check_mode (read-only).
+    options:
+      compliance:
+        type: dict
+        description: Top-level compliance configuration.
+        options:
+          framework:
+            type: str
+            default: stig
+            choices:
+              - stig
+            description: Compliance framework to evaluate against.
+          platform:
+            type: str
+            required: true
+            description: Target platform (ios, eos).
+      compliance_evaluate:
+        type: dict
+        description: Evaluation phase settings.
+        options:
+          cat1:
+            type: bool
+            default: true
+            description: Evaluate CAT I (high severity) controls.
+          cat2:
+            type: bool
+            default: true
+            description: Evaluate CAT II (medium severity) controls.
+          cat3:
+            type: bool
+            default: true
+            description: Evaluate CAT III (low severity) controls.
+      stig_controls:
+        type: dict
+        required: true
+        description: >-
+          Per-rule configuration keyed by V-key. Each value must
+          contain run (bool). May include platform-specific parameters.
+      compliance_access_ports:
+        type: list
+        elements: dict
+        description: Access ports from scan role.
+      compliance_trunk_ports:
+        type: list
+        elements: dict
+        description: Trunk ports from scan role.
+      compliance_voice_ports:
+        type: list
+        elements: dict
+        description: Voice ports from scan role.

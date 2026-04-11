@@ -1,0 +1,10 @@
+---
+profile: production
+
+# Cross-role variables are intentional in this collection.
+# The compliance, compliance_*, stig_controls, stig_results, and stig_rules
+# variables are the collection's public API that flows between
+# roles (scan -> evaluate -> remediate -> report).
+# See docs/adr/0002-conventions-and-data-model.md for rationale.
+skip_list:
+  - var-naming[no-role-prefix]

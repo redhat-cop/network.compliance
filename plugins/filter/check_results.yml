@@ -1,0 +1,52 @@
+DOCUMENTATION:
+  name: check_results
+  version_added: "0.1.0"
+  short_description: Extract non-compliant items from registered command output
+  author: Ansible Network Team
+  description:
+    - Takes the C(.results) list from a registered loop task and returns
+      identifiers of items whose output does NOT match the expected pattern.
+    - Works with any platform command module (C(ios_command), C(eos_command),
+      C(junos_command), C(nxos_command)).
+  positional: _input, match
+  options:
+    _input:
+      description: List of registered loop results (C(register.results)).
+      type: list
+      elements: dict
+      required: true
+    match:
+      description: Regex pattern that compliant output must contain.
+      type: str
+      required: true
+    result_key:
+      description: Dot-notation path to the output text to check in each result entry.
+      type: str
+      default: "stdout.0"
+    item_key:
+      description: Dot-notation path to the item identifier to return for non-compliant entries.
+      type: str
+      default: "item.name"
+  seealso:
+    - plugin_type: filter
+      plugin: network.compliance.stig_result
+    - plugin_type: filter
+      plugin: network.compliance.evaluate_results
+
+EXAMPLES: |
+
+  # Find interfaces missing BPDU Guard
+  # result => ['GigabitEthernet0/2', 'GigabitEthernet0/5']
+  missing: "{{ _eval.results | network.compliance.check_results(match='spanning-tree bpduguard enable') }}"
+
+  # Custom keys for non-standard output
+  missing: "{{ _eval.results | network.compliance.check_results(
+      match='ntp server .* prefer',
+      result_key='stdout.0',
+      item_key='item') }}"
+
+RETURN:
+  _value:
+    description: List of non-compliant item identifiers.
+    type: list
+    elements: str

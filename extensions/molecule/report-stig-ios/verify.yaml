@@ -1,0 +1,49 @@
+---
+- name: Verify - Report role generates valid CKLB and XCCDF
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Read CKLB file
+      ansible.builtin.slurp:
+        src: "/tmp/molecule_compliance_reports/mock-ios-01.cklb"
+      register: _verify_cklb_raw
+      delegate_to: localhost
+
+    - name: Parse CKLB JSON
+      ansible.builtin.set_fact:
+        _verify_cklb: "{{ _verify_cklb_raw.content | b64decode | from_json }}"
+
+    - name: Assert CKLB structure is valid
+      ansible.builtin.assert:
+        that:
+          - _verify_cklb.title == 'mock-ios-01'
+          - _verify_cklb.stigs is defined
+          - _verify_cklb.stigs | length > 0
+          - _verify_cklb.stigs[0].rules | length > 0
+          - _verify_cklb.target_data.host_name == 'mock-ios-01'
+        fail_msg: "CKLB structure is invalid"
+
+    - name: Assert CKLB rules have correct statuses
+      ansible.builtin.assert:
+        that:
+          - item.status in ['not_a_finding', 'open', 'not_reviewed']
+        fail_msg: "Invalid status in CKLB rule {{ item.group_id }}"
+      loop: "{{ _verify_cklb.stigs[0].rules }}"
+      loop_control:
+        label: "{{ item.group_id }}"
+
+    - name: Read XCCDF file
+      ansible.builtin.slurp:
+        src: "/tmp/molecule_compliance_reports/mock-ios-01_xccdf.xml"
+      register: _verify_xccdf_raw
+      delegate_to: localhost
+
+    - name: Assert XCCDF contains expected elements
+      ansible.builtin.assert:
+        that:
+          - "'<?xml version' in (_verify_xccdf_raw.content | b64decode)"
+          - "'<target>mock-ios-01</target>' in (_verify_xccdf_raw.content | b64decode)"
+          - "'<result>pass</result>' in (_verify_xccdf_raw.content | b64decode)"
+          - "'<result>fail</result>' in (_verify_xccdf_raw.content | b64decode)"
+          - "'sm:detail' in (_verify_xccdf_raw.content | b64decode)"
+        fail_msg: "XCCDF structure is invalid"

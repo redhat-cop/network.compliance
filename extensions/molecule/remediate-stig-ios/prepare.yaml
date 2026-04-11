@@ -1,0 +1,34 @@
+---
+- name: Prepare mock evaluation results for remediation
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Seed compliance port lists
+      ansible.builtin.set_fact:
+        compliance_access_ports:
+          - name: GigabitEthernet0/1
+            mode: access
+          - name: GigabitEthernet0/2
+            mode: access
+        compliance_voice_ports: []
+        compliance_trunk_ports:
+          - name: GigabitEthernet0/48
+            mode: trunk
+
+    - name: Seed stig_results with open findings (simulates evaluate output)
+      ansible.builtin.set_fact:
+        stig_results:
+          V-220656:
+            status: open
+            findings:
+              - GigabitEthernet0/1
+            detail: "Missing BPDU Guard on: GigabitEthernet0/1"
+          V-220657:
+            status: open
+            findings:
+              - "spanning-tree loopguard default not configured"
+            detail: "STP Loop Guard issue: spanning-tree loopguard default not configured"
+          V-220649:
+            status: not_a_finding
+            findings: []
+            detail: "All access ports have 802.1x configured"

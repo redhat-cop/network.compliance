@@ -1,0 +1,34 @@
+---
+compliance:
+  framework: stig
+  platform: ""
+
+compliance_evaluate:
+  cat1: true
+  cat2: true
+  cat3: true
+
+compliance_access_ports: []
+compliance_voice_ports: []
+compliance_trunk_ports: []
+
+stig_controls:
+  V-220649:
+    run: true
+    auth_hostmode: "single-host"
+  V-220650:
+    run: true
+  V-220651:
+    run: true
+  V-220656:
+    run: true
+  V-220657:
+    run: true
+  V-220665:
+    run: true
+  V-220666:
+    run: true
+  V-220662:
+    run: true
+  V-220663:
+    run: true

@@ -1,0 +1,4 @@
+{% for port in compliance_trunk_ports %}
+interface {{ port.name }}
+ switchport nonegotiate
+{% endfor %}

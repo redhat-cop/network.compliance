@@ -1,0 +1,13 @@
+[allowlist]
+description = "Allowlist for network.compliance collection"
+paths = [
+  '''\.agents/skills/.*/evals/''',
+  '''tests/unit/''',
+  '''docs/research/''',
+]
+# Example STIG rule metadata contains fake IPs and passwords for documentation
+regexTarget = "match"
+regexes = [
+  '''iosstig_vtp_user_password: changeme''',
+  '''192\.168\.68\.25[01]''',
+]

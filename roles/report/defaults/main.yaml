@@ -1,0 +1,15 @@
+---
+compliance:
+  framework: stig
+  platform: ""
+
+compliance_report:
+  format: cklb
+  output_dir: /tmp/compliance_reports
+
+compliance_stigmanager:
+  enabled: false
+  url: ""
+  collection_id: ""
+  token: ""
+  dryrun: false

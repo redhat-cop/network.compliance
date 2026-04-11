@@ -1,0 +1,37 @@
+---
+# CAT III — Low Severity
+
+# V-220662: Storm control on access ports
+- name: >-
+    STIG | CISC-L2-000160 | V-220662 | CAT-III |
+    Configure storm control on access ports
+  when:
+    - stig_controls['V-220662'].run | default(false)
+    - stig_results['V-220662'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000160
+    - V-220662
+    - SV-220662r648766
+    - cat3
+    - CCI-002385
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220662.j2
+    save_when: changed
+
+# V-220663: IGMP Snooping (global)
+- name: >-
+    STIG | CISC-L2-000170 | V-220663 | CAT-III |
+    Enable IGMP Snooping globally
+  when:
+    - stig_controls['V-220663'].run | default(false)
+    - stig_results['V-220663'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000170
+    - V-220663
+    - SV-220663r929005
+    - cat3
+    - CCI-002385
+  cisco.ios.ios_config:
+    lines:
+      - ip igmp snooping
+    save_when: changed

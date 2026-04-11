@@ -1,0 +1,9 @@
+---
+compliance:
+  framework: stig
+  platform: ""
+
+compliance_remediate:
+  cat1: true
+  cat2: true
+  cat3: true

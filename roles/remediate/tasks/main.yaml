@@ -1,0 +1,20 @@
+---
+- name: Resolve target platform
+  ansible.builtin.set_fact:
+    remediate_platform: >-
+      {{ compliance.platform | default(ansible_network_os | split('.') | last) }}
+
+- name: Validate stig_results is available
+  ansible.builtin.assert:
+    that:
+      - stig_results is defined
+      - stig_results is mapping
+      - stig_results | length > 0
+    fail_msg: >-
+      stig_results must be provided by the evaluate role before
+      remediation can run.
+    quiet: true
+
+- name: Include framework and platform remediation tasks
+  ansible.builtin.include_tasks:
+    file: "{{ compliance.framework | default('stig') }}/{{ remediate_platform }}/main.yaml"

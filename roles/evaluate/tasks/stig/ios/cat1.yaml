@@ -1,0 +1,33 @@
+---
+# CAT I — High Severity
+
+# V-220649: 802.1x authentication on access/voice ports
+- name: >-
+    STIG | CISC-L2-000020 | V-220649 | CAT-I |
+    Verify 802.1x authentication on access ports
+  when: stig_controls['V-220649'].run | default(false)
+  tags:
+    - CISC-L2-000020
+    - V-220649
+    - SV-220649r863283
+    - cat1
+    - CCI-000778
+  block:
+    - name: Check 802.1x on access port configuration
+      cisco.ios.ios_command:
+        commands:
+          - "show run int {{ item.name }}"
+      loop: "{{ compliance_access_ports }}"
+      loop_control:
+        label: "{{ item.name }}"
+      register: _evaluate_access_8021x
+
+    - name: Evaluate 802.1x compliance on access ports
+      ansible.builtin.set_fact:
+        stig_results: >-
+          {{ _evaluate_access_8021x.results | network.compliance.evaluate_results(
+               rule_id='V-220649',
+               match='authentication port-control auto',
+               pass_msg='All access ports have 802.1x configured',
+               fail_msg='Non-compliant access ports: {}',
+               existing_results=stig_results) }}

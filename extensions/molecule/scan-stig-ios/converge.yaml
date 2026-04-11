@@ -1,0 +1,10 @@
+---
+- name: Converge - Run scan role on mock IOS device
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: network.compliance.scan
+      vars:
+        compliance:
+          framework: stig
+          platform: ios

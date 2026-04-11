@@ -1,0 +1,18 @@
+{
+  "skill_name": "collection-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this PR that adds STIG rule V-220665 (UDLD). The evaluate task uses ios_config instead of ios_command, the task name is just 'Check UDLD', there are no tags, and the remediation uses save_when: always.",
+      "expected_output": "Review should flag: wrong module (ios_config for evaluation instead of ios_command), missing STIG naming convention in task name, missing tags, save_when should be changed, and should suggest using evaluate_results filter.",
+      "assertions": [
+        "Flags ios_config usage in evaluate task as incorrect (should be ios_command)",
+        "Flags missing STIG naming convention in task name",
+        "Flags missing tags (STIG ID, V-key, severity, CCI)",
+        "Flags save_when: always (should be save_when: changed)",
+        "Suggests using evaluate_results or check_results + stig_result filters",
+        "Does not approve the PR without fixes"
+      ]
+    }
+  ]
+}

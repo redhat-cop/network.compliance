@@ -1,0 +1,28 @@
+{
+  "skill_name": "compliance-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a Molecule scenario to test the evaluate role for STIG on Cisco IOS. It should use mock data with 2 access ports and 1 trunk port, and verify that stig_results is populated correctly.",
+      "expected_output": "A complete Molecule scenario under extensions/molecule/evaluate-stig-ios/ with molecule.yaml (delegated driver, local connection), prepare.yaml (mock port data), converge.yaml (include evaluate role), and verify.yaml (assert stig_results).",
+      "assertions": [
+        "Scenario directory is named evaluate-stig-ios (follows <role>-<framework>-<platform> convention)",
+        "molecule.yaml uses default/delegated driver with ansible_connection: local",
+        "prepare.yaml sets compliance_access_ports and compliance_trunk_ports with mock data",
+        "converge.yaml includes the network.compliance.evaluate role",
+        "verify.yaml asserts stig_results is defined and contains valid statuses",
+        "Variables use compliance.framework and compliance.platform (not flat prefix)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Write a Molecule test for the remediate role that includes idempotency checking.",
+      "expected_output": "A scenario with idempotence in the test_sequence, prepare.yaml seeding stig_results with open findings.",
+      "assertions": [
+        "molecule.yaml test_sequence includes idempotence step",
+        "prepare.yaml pre-populates stig_results with at least one open finding",
+        "Scenario name follows remediate-stig-<platform> convention"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+---
+argument_specs:
+  main:
+    short_description: Remediate STIG findings on network devices
+    description: >-
+      Phase 3 of the compliance lifecycle. Applies compliant configurations
+      for rules found open during evaluation. Only remediates findings
+      where stig_results status is open. Must be idempotent.
+    options:
+      compliance:
+        type: dict
+        description: Top-level compliance configuration.
+        options:
+          framework:
+            type: str
+            default: stig
+            choices:
+              - stig
+          platform:
+            type: str
+            required: true
+      compliance_remediate:
+        type: dict
+        description: Remediation phase settings.
+        options:
+          cat1:
+            type: bool
+            default: true
+            description: Remediate CAT I (high severity) findings.
+          cat2:
+            type: bool
+            default: true
+            description: Remediate CAT II (medium severity) findings.
+          cat3:
+            type: bool
+            default: true
+            description: Remediate CAT III (low severity) findings.
+      stig_results:
+        type: dict
+        required: true
+        description: >-
+          Evaluation results from the evaluate role. Dict keyed by V-key,
+          each value contains status (not_a_finding|open|not_reviewed),
+          findings (list), and detail (str).
+      stig_controls:
+        type: dict
+        required: true
+        description: >-
+          Per-rule configuration keyed by V-key. Each value must
+          contain run (bool).

@@ -1,0 +1,94 @@
+---
+name: Bug Report
+description: "Create a report to help us improve"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bug Report issues are for **concrete, actionable bugs** only.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: Briefly describe the problem.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: components
+    attributes:
+      label: Select the relevant components
+      options:
+        - label: Scan Role
+        - label: Evaluate Role
+        - label: Remediate Role
+        - label: Report Role
+        - label: Filter Plugins (check_results, stig_result, evaluate_results)
+        - label: Report Plugins (to_cklb, to_xccdf)
+        - label: Documentation
+        - label: Molecule Tests
+        - label: CI/CD
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Network Platform
+      description: Which network platform is affected?
+      options:
+        - Cisco IOS / IOS-XE
+        - Juniper JunOS
+        - Arista EOS
+        - Other
+        - Not platform-specific
+    validations:
+      required: false
+
+  - type: input
+    id: stig_rule
+    attributes:
+      label: STIG Rule (if applicable)
+      description: V-key or STIG ID of the affected rule
+      placeholder: V-220649 / CISC-L2-000020
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: false
+
+  - type: input
+    id: collection_version
+    attributes:
+      label: Collection Version
+      placeholder: "0.1.0"
+    validations:
+      required: false
+
+  - type: input
+    id: ansible_version
+    attributes:
+      label: Ansible Version
+      placeholder: ansible-core 2.15+
+    validations:
+      required: false

@@ -1,0 +1,63 @@
+---
+argument_specs:
+  main:
+    short_description: Generate STIG compliance reports
+    description: >-
+      Phase 4 of the compliance lifecycle. Generates CKLB and/or XCCDF
+      compliance artifacts from stig_results. Optionally pushes results
+      to STIG Manager API.
+    options:
+      compliance:
+        type: dict
+        description: Top-level compliance configuration.
+        options:
+          framework:
+            type: str
+            default: stig
+            choices:
+              - stig
+          platform:
+            type: str
+            default: ""
+      compliance_report:
+        type: dict
+        description: Report generation settings.
+        options:
+          format:
+            type: str
+            default: cklb
+            choices:
+              - cklb
+              - xccdf
+              - both
+            description: Report output format.
+          output_dir:
+            type: path
+            default: /tmp/compliance_reports
+            description: Directory to write report files.
+      compliance_stigmanager:
+        type: dict
+        description: STIG Manager API integration settings.
+        options:
+          enabled:
+            type: bool
+            default: false
+          url:
+            type: str
+            description: STIG Manager API base URL.
+          collection_id:
+            type: str
+            description: STIG Manager collection ID.
+          token:
+            type: str
+            no_log: true
+            description: OIDC bearer token for STIG Manager API.
+          dryrun:
+            type: bool
+            default: false
+            description: Validate without submitting if true.
+      stig_results:
+        type: dict
+        required: true
+        description: >-
+          Evaluation results from the evaluate role. Dict keyed by V-key.

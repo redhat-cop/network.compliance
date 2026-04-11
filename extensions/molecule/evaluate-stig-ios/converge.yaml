@@ -1,0 +1,14 @@
+---
+- name: Converge - Run evaluate role on mock IOS device
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: network.compliance.evaluate
+      vars:
+        compliance:
+          framework: stig
+          platform: ios
+        compliance_evaluate:
+          cat1: true
+          cat2: true
+          cat3: true

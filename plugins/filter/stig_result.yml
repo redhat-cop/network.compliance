@@ -1,0 +1,53 @@
+DOCUMENTATION:
+  name: stig_result
+  version_added: "0.1.0"
+  short_description: Build STIG evaluation result dict from findings list
+  author: Ansible Network Team
+  description:
+    - Converts a list of non-compliant items into the standardized
+      C(stig_results) entry structure used across evaluate, remediate,
+      and report roles.
+    - An empty findings list produces C(status=not_a_finding).
+      A non-empty list produces C(status=open).
+  positional: _input, pass_msg
+  options:
+    _input:
+      description: List of non-compliant item identifiers. Empty list means compliant.
+      type: list
+      required: true
+    pass_msg:
+      description: Message when no findings (status is V(not_a_finding)).
+      type: str
+      required: true
+    fail_msg:
+      description:
+        - Message template when findings exist (status is V(open)).
+        - Use C({}) as placeholder for the joined findings list.
+      type: str
+      default: "Non-compliant items: {}"
+    joiner:
+      description: String used to join findings in the fail message.
+      type: str
+      default: ", "
+  seealso:
+    - plugin_type: filter
+      plugin: network.compliance.check_results
+    - plugin_type: filter
+      plugin: network.compliance.evaluate_results
+
+EXAMPLES: |
+
+  # Compliant result
+  # result => {'status': 'not_a_finding', 'findings': [], 'detail': 'All ports compliant'}
+  result: "{{ [] | network.compliance.stig_result(pass_msg='All ports compliant') }}"
+
+  # Non-compliant result
+  # result => {'status': 'open', 'findings': ['Gi0/2'], 'detail': 'Missing BPDU Guard: Gi0/2'}
+  result: "{{ ['Gi0/2'] | network.compliance.stig_result(
+      pass_msg='All ports have BPDU Guard',
+      fail_msg='Missing BPDU Guard: {}') }}"
+
+RETURN:
+  _value:
+    description: Dict with C(status), C(findings), and C(detail) keys.
+    type: dict

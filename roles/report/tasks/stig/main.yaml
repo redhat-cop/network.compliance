@@ -1,0 +1,29 @@
+---
+- name: Generate CKLB report
+  ansible.builtin.copy:
+    content: >-
+      {{ stig_results | network.compliance.to_cklb(
+           rules=stig_rules,
+           hostname=inventory_hostname,
+           ip_address=ansible_host | default('')) }}
+    dest: "{{ compliance_report.output_dir }}/{{ inventory_hostname }}.cklb"
+    mode: "0644"
+  delegate_to: localhost
+  when: compliance_report.format in ['cklb', 'both']
+
+- name: Generate XCCDF report
+  ansible.builtin.copy:
+    content: >-
+      {{ stig_results | network.compliance.to_xccdf(
+           rules=stig_rules,
+           hostname=inventory_hostname,
+           ip_address=ansible_host | default('')) }}
+    dest: "{{ compliance_report.output_dir }}/{{ inventory_hostname }}_xccdf.xml"
+    mode: "0644"
+  delegate_to: localhost
+  when: compliance_report.format in ['xccdf', 'both']
+
+- name: Include STIG Manager API integration
+  ansible.builtin.include_tasks:
+    file: stigmanager.yaml
+  when: compliance_stigmanager.enabled | default(false)

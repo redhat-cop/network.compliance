@@ -1,0 +1,28 @@
+---
+- name: Verify - Scan role correctly classifies interfaces
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Assert access ports are classified
+      ansible.builtin.assert:
+        that:
+          - compliance_access_ports is defined
+          - compliance_access_ports | length == 2
+          - compliance_access_ports | map(attribute='name') | list is superset(['GigabitEthernet0/1', 'GigabitEthernet0/2'])
+        fail_msg: "Access port classification failed"
+
+    - name: Assert voice ports are classified
+      ansible.builtin.assert:
+        that:
+          - compliance_voice_ports is defined
+          - compliance_voice_ports | length == 1
+          - compliance_voice_ports[0].name == 'GigabitEthernet0/3'
+        fail_msg: "Voice port classification failed"
+
+    - name: Assert trunk ports are classified
+      ansible.builtin.assert:
+        that:
+          - compliance_trunk_ports is defined
+          - compliance_trunk_ports | length == 1
+          - compliance_trunk_ports[0].name == 'GigabitEthernet0/48'
+        fail_msg: "Trunk port classification failed"

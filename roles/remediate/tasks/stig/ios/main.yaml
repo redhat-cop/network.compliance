@@ -1,0 +1,21 @@
+---
+- name: Include CAT I remediation
+  ansible.builtin.include_tasks:
+    file: cat1.yaml
+  when: compliance_remediate.cat1 | default(true)
+  tags:
+    - cat1
+
+- name: Include CAT II remediation
+  ansible.builtin.include_tasks:
+    file: cat2.yaml
+  when: compliance_remediate.cat2 | default(true)
+  tags:
+    - cat2
+
+- name: Include CAT III remediation
+  ansible.builtin.include_tasks:
+    file: cat3.yaml
+  when: compliance_remediate.cat3 | default(true)
+  tags:
+    - cat3

@@ -1,0 +1,80 @@
+DOCUMENTATION:
+  name: evaluate_results
+  version_added: "0.1.0"
+  short_description: Full evaluate pipeline combining check, status, and merge
+  author: Ansible Network Team
+  description:
+    - Combines C(check_results) and C(stig_result) into a single call,
+      then merges the result into the existing C(stig_results) dict.
+    - This is the recommended filter for standard STIG rule evaluation tasks.
+    - Takes registered command loop output, extracts non-compliant items,
+      builds the status dict, and returns the merged results.
+  positional: _input, rule_id, match, pass_msg, fail_msg
+  options:
+    _input:
+      description: List of registered loop results (C(register.results)).
+      type: list
+      elements: dict
+      required: true
+    rule_id:
+      description: V-key identifier (e.g., C(V-220656)).
+      type: str
+      required: true
+    match:
+      description: Regex pattern that compliant output must contain.
+      type: str
+      required: true
+    pass_msg:
+      description: Message when compliant.
+      type: str
+      required: true
+    fail_msg:
+      description:
+        - Message template when non-compliant.
+        - Use C({}) as placeholder for the findings list.
+      type: str
+      required: true
+    existing_results:
+      description: Existing C(stig_results) dict to merge into. Starts empty if not provided.
+      type: dict
+      default: {}
+    result_key:
+      description: Dot-notation path to output text in each result entry.
+      type: str
+      default: "stdout.0"
+    item_key:
+      description: Dot-notation path to item identifier in each result entry.
+      type: str
+      default: "item.name"
+    joiner:
+      description: String used to join findings in the fail message.
+      type: str
+      default: ", "
+  seealso:
+    - plugin_type: filter
+      plugin: network.compliance.check_results
+    - plugin_type: filter
+      plugin: network.compliance.stig_result
+
+EXAMPLES: |
+
+  # Standard 2-task evaluation pattern:
+
+  # Task 1: gather
+  # - cisco.ios.ios_command:
+  #     commands: "show run int {{ item.name }}"
+  #   loop: "{{ compliance_access_ports }}"
+  #   register: _eval_bpdu
+
+  # Task 2: evaluate (one filter call does check + status + merge)
+  stig_results: "{{ _eval_bpdu.results | network.compliance.evaluate_results(
+      rule_id='V-220656',
+      match='spanning-tree bpduguard enable',
+      pass_msg='All access ports have BPDU Guard',
+      fail_msg='Missing BPDU Guard: {}',
+      existing_results=stig_results) }}"
+
+RETURN:
+  _value:
+    description: Merged C(stig_results) dict with the new rule added.
+    type: dict

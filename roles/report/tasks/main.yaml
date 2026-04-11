@@ -1,0 +1,25 @@
+---
+- name: Load STIG rule metadata
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/../evaluate/vars/stig/rules.yaml"
+
+- name: Validate stig_results is available
+  ansible.builtin.assert:
+    that:
+      - stig_results is defined
+      - stig_results is mapping
+    fail_msg: >-
+      stig_results must be provided by the evaluate role before
+      report generation can run.
+    quiet: true
+
+- name: Ensure report output directory exists
+  ansible.builtin.file:
+    path: "{{ compliance_report.output_dir }}"
+    state: directory
+    mode: "0755"
+  delegate_to: localhost
+
+- name: Include framework report tasks
+  ansible.builtin.include_tasks:
+    file: "{{ compliance.framework | default('stig') }}/main.yaml"

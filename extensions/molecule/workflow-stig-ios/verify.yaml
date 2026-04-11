@@ -1,0 +1,44 @@
+---
+- name: Verify - End-to-end workflow produced expected outputs
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Assert stig_results is populated
+      ansible.builtin.assert:
+        that:
+          - stig_results is defined
+          - stig_results | length > 0
+        fail_msg: "stig_results not populated after workflow"
+
+    - name: Assert all rules have valid status
+      ansible.builtin.assert:
+        that:
+          - stig_results[item].status in ['not_a_finding', 'open']
+        fail_msg: "Invalid status for {{ item }}"
+      loop: "{{ stig_results.keys() | list }}"
+      loop_control:
+        label: "{{ item }}"
+
+    - name: Assert CKLB report was generated
+      ansible.builtin.stat:
+        path: "/tmp/molecule_workflow_reports/mock-ios-01.cklb"
+      register: _verify_cklb_stat
+      delegate_to: localhost
+
+    - name: Assert CKLB file exists
+      ansible.builtin.assert:
+        that:
+          - _verify_cklb_stat.stat.exists
+        fail_msg: "CKLB report file was not generated"
+
+    - name: Assert XCCDF report was generated
+      ansible.builtin.stat:
+        path: "/tmp/molecule_workflow_reports/mock-ios-01_xccdf.xml"
+      register: _verify_xccdf_stat
+      delegate_to: localhost
+
+    - name: Assert XCCDF file exists
+      ansible.builtin.assert:
+        that:
+          - _verify_xccdf_stat.stat.exists
+        fail_msg: "XCCDF report file was not generated"

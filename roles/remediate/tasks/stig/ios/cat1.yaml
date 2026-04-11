@@ -1,0 +1,28 @@
+---
+# CAT I — High Severity
+
+# V-220649: 802.1x authentication on access/voice ports
+- name: >-
+    STIG | CISC-L2-000020 | V-220649 | CAT-I |
+    Configure 802.1x authentication on access ports
+  when:
+    - stig_controls['V-220649'].run | default(false)
+    - stig_results['V-220649'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000020
+    - V-220649
+    - SV-220649r863283
+    - cat1
+    - CCI-000778
+  block:
+    - name: Apply 802.1x configuration to access ports
+      cisco.ios.ios_config:
+        src: stig/ios/remediate_v220649.j2
+        save_when: changed
+  rescue:
+    - name: Log 802.1x remediation failure
+      ansible.builtin.debug:
+        msg: >-
+          WARNING: 802.1x remediation failed. This may indicate a lockout
+          risk. Verify device connectivity and RADIUS server availability
+          before retrying.

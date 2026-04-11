@@ -1,0 +1,25 @@
+---
+argument_specs:
+  main:
+    short_description: Discover device state and classify interfaces
+    description: >-
+      Phase 1 of the compliance lifecycle. Gathers device facts using
+      platform resource modules and classifies interfaces into access,
+      voice, and trunk port lists for downstream evaluation.
+    options:
+      compliance:
+        type: dict
+        description: Top-level compliance configuration.
+        options:
+          framework:
+            type: str
+            default: stig
+            choices:
+              - stig
+            description: Compliance framework to evaluate against.
+          platform:
+            type: str
+            default: ""
+            description: >-
+              Target platform (ios, eos). Derived from
+              ansible_network_os if not provided.
