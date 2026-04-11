@@ -1,0 +1,29 @@
+DOCUMENTATION:
+  name: compliance_summary
+  version_added: "0.1.0"
+  short_description: Summarize compliance evaluation results into counts
+  author: Ansible Network Team
+  description:
+    - Counts passed, open, and not_reviewed rules from C(stig_results).
+    - Returns a dict with C(total), C(passed), C(open), and C(not_reviewed) counts.
+  positional: _input
+  options:
+    _input:
+      description: The C(stig_results) dict keyed by V-key.
+      type: dict
+      required: true
+
+EXAMPLES: |
+
+  # Get compliance summary
+  # summary => {'total': 9, 'passed': 7, 'open': 2, 'not_reviewed': 0}
+  summary: "{{ stig_results | network.compliance.compliance_summary }}"
+
+  # Use in a debug message
+  # - debug:
+  #     msg: "{{ summary.total }} rules: {{ summary.passed }} passed, {{ summary.open }} open"
+
+RETURN:
+  _value:
+    description: Dict with total, passed, open, and not_reviewed counts.
+    type: dict

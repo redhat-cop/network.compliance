@@ -315,6 +315,43 @@ def _xml_escape(text):
     return text
 
 
+def compliance_summary(stig_results_dict):
+    """Summarize compliance evaluation results.
+
+    Args:
+        stig_results_dict: The ``stig_results`` dict keyed by V-key.
+
+    Returns:
+        Dict with ``total``, ``passed``, ``open``, and ``not_reviewed`` counts.
+    """
+    if not isinstance(stig_results_dict, dict):
+        raise AnsibleFilterError(
+            f"compliance_summary: input must be a dict, got {type(stig_results_dict).__name__}"
+        )
+
+    passed = 0
+    open_count = 0
+    not_reviewed = 0
+
+    for result in stig_results_dict.values():
+        status = (
+            result.get("status", "not_reviewed") if isinstance(result, dict) else "not_reviewed"
+        )
+        if status == "not_a_finding":
+            passed += 1
+        elif status == "open":
+            open_count += 1
+        else:
+            not_reviewed += 1
+
+    return {
+        "total": len(stig_results_dict),
+        "passed": passed,
+        "open": open_count,
+        "not_reviewed": not_reviewed,
+    }
+
+
 class FilterModule:
     """Network compliance filter plugins."""
 
@@ -324,6 +361,7 @@ class FilterModule:
             "check_results": check_results,
             "stig_result": stig_result,
             "evaluate_results": evaluate_results,
+            "compliance_summary": compliance_summary,
             "to_cklb": to_cklb,
             "to_xccdf": to_xccdf,
         }

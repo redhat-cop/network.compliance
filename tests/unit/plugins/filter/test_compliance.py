@@ -12,6 +12,7 @@ from ansible.errors import AnsibleFilterError
 
 from ansible_collections.network.compliance.plugins.filter.compliance import (
     check_results,
+    compliance_summary,
     evaluate_results,
     stig_result,
     to_cklb,
@@ -313,3 +314,40 @@ class TestToXccdf:
     def test_invalid_input(self):
         with pytest.raises(AnsibleFilterError):
             to_xccdf("not_a_dict", {}, "host")
+
+
+# ── compliance_summary ────────────────────────────────────────────────
+
+
+class TestComplianceSummary:
+    def test_mixed_results(self):
+        results = {
+            "V-220649": {"status": "not_a_finding", "findings": [], "detail": "OK"},
+            "V-220656": {"status": "open", "findings": ["Gi0/2"], "detail": "Missing"},
+            "V-220657": {"status": "not_a_finding", "findings": [], "detail": "OK"},
+        }
+        summary = compliance_summary(results)
+        assert summary == {"total": 3, "passed": 2, "open": 1, "not_reviewed": 0}
+
+    def test_all_passed(self):
+        results = {
+            "V-220649": {"status": "not_a_finding", "findings": [], "detail": "OK"},
+            "V-220656": {"status": "not_a_finding", "findings": [], "detail": "OK"},
+        }
+        summary = compliance_summary(results)
+        assert summary == {"total": 2, "passed": 2, "open": 0, "not_reviewed": 0}
+
+    def test_empty_results(self):
+        summary = compliance_summary({})
+        assert summary == {"total": 0, "passed": 0, "open": 0, "not_reviewed": 0}
+
+    def test_not_reviewed(self):
+        results = {
+            "V-220649": {"status": "not_reviewed", "findings": [], "detail": ""},
+        }
+        summary = compliance_summary(results)
+        assert summary == {"total": 1, "passed": 0, "open": 0, "not_reviewed": 1}
+
+    def test_invalid_input(self):
+        with pytest.raises(AnsibleFilterError):
+            compliance_summary("not_a_dict")

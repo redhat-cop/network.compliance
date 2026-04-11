@@ -26,12 +26,7 @@
         name: network.compliance.evaluate
 
     - name: Display evaluation summary
+      vars:
+        summary: "{{ stig_results | network.compliance.compliance_summary }}"
       ansible.builtin.debug:
-        msg: >-
-          Evaluated {{ stig_results | length }} rules:
-          {{ stig_results | dict2items
-             | selectattr('value.status', 'equalto', 'not_a_finding')
-             | list | length }} passed,
-          {{ stig_results | dict2items
-             | selectattr('value.status', 'equalto', 'open')
-             | list | length }} open
+        msg: "Evaluated {{ summary.total }} rules: {{ summary.passed }} passed, {{ summary.open }} open"
