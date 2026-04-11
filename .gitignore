@@ -18,6 +18,10 @@ ENV/
 *.tar.gz
 ansible.cfg
 .ansible/
+ansible_collections/
+
+# Claude Code
+.claude/worktrees/
 
 # Testing
 .pytest_cache/

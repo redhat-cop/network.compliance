@@ -27,6 +27,16 @@ The `ade install -e .` command:
 - Symlinks the collection source so edits are reflected immediately
 - Configures `ansible.cfg` for workspace isolation
 
+**Fallback if `ade install` fails** (e.g., Galaxy API unreachable):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install ansible-dev-tools
+pip install -r requirements.txt
+ansible-galaxy collection install -r requirements.yml --force 2>/dev/null || true
+```
+
 ## Contributing with an AI Agent
 
 This repository supports agentic development via [Agent Skills](https://agentskills.io). Skills are auto-discovered from `.agents/skills/` by Claude Code, Cursor, GitHub Copilot, VS Code, and other compatible tools.

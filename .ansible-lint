@@ -1,6 +1,13 @@
 ---
 profile: production
 
+exclude_paths:
+  - .venv/
+  - .tox/
+  - .ansible/
+  - .cache/
+  - ansible_collections/
+
 # Cross-role variables are intentional in this collection.
 # The compliance, compliance_*, stig_controls, stig_results, and stig_rules
 # variables are the collection's public API that flows between

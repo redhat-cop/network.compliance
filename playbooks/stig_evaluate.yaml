@@ -1,0 +1,37 @@
+---
+# STIG compliance evaluation (audit only)
+#
+# Discovers device state and evaluates against STIG controls.
+# No configuration changes are made — safe for production audit.
+#
+# Usage:
+#   ansible-playbook network.compliance.stig_evaluate -i inventory.yaml
+#   ansible-playbook network.compliance.stig_evaluate -i inventory.yaml --tags cat1
+#   ansible-playbook network.compliance.stig_evaluate -i inventory.yaml --check
+
+- name: STIG compliance evaluation
+  hosts: all
+  gather_facts: false
+  vars:
+    compliance:
+      framework: stig
+
+  tasks:
+    - name: Phase 1 - Discover device state
+      ansible.builtin.include_role:
+        name: network.compliance.scan
+
+    - name: Phase 2 - Evaluate STIG compliance
+      ansible.builtin.include_role:
+        name: network.compliance.evaluate
+
+    - name: Display evaluation summary
+      ansible.builtin.debug:
+        msg: >-
+          Evaluated {{ stig_results | length }} rules:
+          {{ stig_results | dict2items
+             | selectattr('value.status', 'equalto', 'not_a_finding')
+             | list | length }} passed,
+          {{ stig_results | dict2items
+             | selectattr('value.status', 'equalto', 'open')
+             | list | length }} open

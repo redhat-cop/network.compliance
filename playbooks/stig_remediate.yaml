@@ -1,0 +1,37 @@
+---
+# STIG compliance remediation workflow
+#
+# Full four-phase lifecycle: scan, evaluate, remediate, report.
+# Remediates only rules found 'open' during evaluation.
+# Generates CKLB and XCCDF reports after remediation.
+#
+# Usage:
+#   ansible-playbook network.compliance.stig_remediate -i inventory.yaml
+#   ansible-playbook network.compliance.stig_remediate -i inventory.yaml --tags cat1
+
+- name: STIG compliance remediation
+  hosts: all
+  gather_facts: false
+  vars:
+    compliance:
+      framework: stig
+    compliance_report:
+      format: both
+      output_dir: /tmp/compliance_reports
+
+  tasks:
+    - name: Phase 1 - Discover device state
+      ansible.builtin.include_role:
+        name: network.compliance.scan
+
+    - name: Phase 2 - Evaluate STIG compliance
+      ansible.builtin.include_role:
+        name: network.compliance.evaluate
+
+    - name: Phase 3 - Remediate open findings
+      ansible.builtin.include_role:
+        name: network.compliance.remediate
+
+    - name: Phase 4 - Generate compliance reports
+      ansible.builtin.include_role:
+        name: network.compliance.report

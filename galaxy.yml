@@ -28,6 +28,14 @@ homepage: https://github.com/redhat-cop/network.compliance
 issues: https://github.com/redhat-cop/network.compliance/issues
 build_ignore:
   - .agents
+  - .ansible
+  - .cache
+  - .claude
+  - .github
+  - .pytest_cache
+  - .tox
+  - .venv
+  - ansible_collections
   - docs
   - changelogs/fragments/.gitkeep
   - "*.tar.gz"

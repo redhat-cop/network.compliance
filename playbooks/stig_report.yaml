@@ -1,0 +1,26 @@
+---
+# STIG compliance report generation
+#
+# Generates CKLB and/or XCCDF reports from existing stig_results.
+# Run after stig_evaluate.yaml or as part of a workflow where
+# stig_results is provided via extra vars or cached facts.
+#
+# Usage:
+#   ansible-playbook network.compliance.stig_report -i inventory.yaml
+#   ansible-playbook network.compliance.stig_report -i inventory.yaml \
+#     -e "compliance_report={format: xccdf, output_dir: /opt/reports}"
+
+- name: STIG compliance report generation
+  hosts: all
+  gather_facts: false
+  vars:
+    compliance:
+      framework: stig
+    compliance_report:
+      format: both
+      output_dir: /tmp/compliance_reports
+
+  tasks:
+    - name: Generate compliance reports
+      ansible.builtin.include_role:
+        name: network.compliance.report
