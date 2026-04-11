@@ -33,7 +33,7 @@ Each phase can run independently. For example, run `evaluate` alone for audit-on
 |-----------|--------|---------------|
 | STIG | Active | DISA |
 
-The architecture supports adding additional frameworks (e.g., CIS Benchmarks) via the `compliance_framework` variable.
+The architecture supports adding additional frameworks (e.g., CIS Benchmarks) and platforms (e.g., Juniper JunOS, Arista EOS, Cisco NX-OS) via the `compliance.framework` and `compliance.platform` variables. See `docs/adr/0001-architecture-and-lifecycle.md` for the extensibility design.
 
 ## Installation
 
