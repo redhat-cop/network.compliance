@@ -45,25 +45,8 @@ ansible-galaxy collection install network.compliance
 
 ### From source (development)
 
-Use [ansible-dev-environment](https://github.com/ansible/ansible-dev-environment) (ade)
-for an isolated, editable install with all dependencies:
-
-```bash
-git clone https://github.com/redhat-cop/network.compliance.git
-cd network.compliance
-
-# Create isolated virtual environment with editable install
-ade install -e . --venv .venv
-
-# Activate the environment
-source .venv/bin/activate
-
-# Verify the collection is installed
-ansible-galaxy collection list | grep network.compliance
-```
-
-This symlinks the collection into the virtual environment so code changes
-are reflected immediately without reinstalling.
+See [Setting up the development environment](#setting-up-the-development-environment)
+in the Contributing section.
 
 ### Requirements
 
