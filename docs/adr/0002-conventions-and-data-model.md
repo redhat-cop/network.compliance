@@ -12,7 +12,7 @@ STIG controls have multiple identifiers. Ansible has a flat variable namespace. 
 
 ### Rule Metadata
 
-Single source of truth in `evaluate/vars/stig/rules.yaml`, keyed by V-key:
+Rule metadata stored per platform and severity in `evaluate/vars/stig/<platform>/catN.yaml`, keyed by V-key:
 
 ```yaml
 stig_rules:

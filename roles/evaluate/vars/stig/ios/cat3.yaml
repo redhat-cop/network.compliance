@@ -1,0 +1,31 @@
+---
+# CAT III — Low Severity — Cisco IOS-XE Layer 2 Switch STIG
+stig_rules:
+  V-220662:
+    stig_id: CISC-L2-000160
+    rule_id: SV-220662r648766
+    severity: cat3
+    srg_id: SRG-NET-000362-L2S-000022
+    cci: CCI-002385
+    title: >-
+      The Cisco switch must have storm control configured on all
+      access ports
+    check_content: >-
+      Review the switch configuration to verify storm control is
+      configured on all host-facing access ports.
+    fix_text: >-
+      Configure storm-control broadcast and unicast on all access ports.
+
+  V-220663:
+    stig_id: CISC-L2-000170
+    rule_id: SV-220663r929005
+    severity: cat3
+    srg_id: SRG-NET-000362-L2S-000023
+    cci: CCI-002385
+    title: >-
+      The Cisco switch must have IGMP Snooping enabled globally
+    check_content: >-
+      Review the switch configuration to verify IGMP snooping
+      is not disabled globally.
+    fix_text: >-
+      Enable IGMP snooping using ip igmp snooping.

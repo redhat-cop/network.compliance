@@ -47,7 +47,7 @@ Before starting, gather:
 
 ```text
 DISA STIG Rule
-├── Identifiers -> evaluate/vars/stig/rules.yaml + task name + task tags
+├── Identifiers -> evaluate/vars/stig/<platform>/cat{1,2,3}.yaml + task name + task tags
 ├── Check Content -> evaluate/tasks/stig/<platform>/catN.yaml
 ├── Fix Text -> remediate/tasks/stig/<platform>/catN.yaml + template
 └── Severity -> cat1.yaml / cat2.yaml / cat3.yaml file placement
@@ -65,7 +65,7 @@ See `docs/adr/0002-conventions-and-data-model.md` for the full variable structur
 
 ## Step-by-step process
 
-### Step 1: Add rule metadata to `roles/evaluate/vars/stig/rules.yaml`
+### Step 1: Add rule metadata to `roles/evaluate/vars/stig/<platform>/catN.yaml`
 
 ```yaml
 stig_rules:
@@ -185,7 +185,7 @@ molecule test -s evaluate-stig-<platform>
 ## Checklist
 
 ```text
-[ ] Rule metadata in evaluate/vars/stig/rules.yaml
+[ ] Rule metadata in evaluate/vars/stig/<platform>/catN.yaml
 [ ] Default variables in evaluate/defaults/main.yaml
 [ ] argument_specs.yml updated
 [ ] Evaluation task using evaluate_results filter with correct naming and tags

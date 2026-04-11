@@ -38,7 +38,7 @@ Identify what type of change this is:
 
 ### Step 2: Verify STIG metadata
 
-For any new STIG rule, check `evaluate/vars/stig/rules.yaml`:
+For any new STIG rule, check `evaluate/vars/stig/<platform>/catN.yaml`:
 
 ```text
 [ ] V-key is correct and matches DISA source
@@ -108,7 +108,7 @@ Cross-reference with: https://public.cyber.mil/stigs/
 ### Step 8: Verify report integration
 
 ```text
-[ ] New rules added to evaluate/vars/stig/rules.yaml (to_cklb and to_xccdf iterate dynamically)
+[ ] New rules added to evaluate/vars/stig/<platform>/catN.yaml (to_cklb and to_xccdf iterate dynamically)
 [ ] Report output includes correct V-key, Rule ID, severity
 [ ] Status and findings flow from stig_results via filter plugins
 ```

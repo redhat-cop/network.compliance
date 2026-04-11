@@ -4,10 +4,6 @@
     evaluate_platform: >-
       {{ compliance.platform | default(ansible_network_os | split('.') | last) }}
 
-- name: Load STIG rule metadata
-  ansible.builtin.include_vars:
-    file: stig/rules.yaml
-
 - name: Initialize stig_results
   ansible.builtin.set_fact:
     stig_results: {}

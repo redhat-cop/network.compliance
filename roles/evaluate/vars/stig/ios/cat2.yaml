@@ -1,23 +1,6 @@
 ---
+# CAT II — Medium Severity — Cisco IOS-XE Layer 2 Switch STIG
 stig_rules:
-  V-220649:
-    stig_id: CISC-L2-000020
-    rule_id: SV-220649r863283
-    severity: cat1
-    srg_id: SRG-NET-000148-L2S-000015
-    cci: CCI-000778
-    title: >-
-      The Cisco switch must authenticate all endpoint devices before
-      establishing a network connection using bidirectional authentication
-    check_content: >-
-      Review the switch configuration to verify 802.1x authentication
-      is configured on all access switch ports.
-    fix_text: >-
-      Configure 802.1x on all access switch ports using
-      authentication port-control auto and dot1x pae authenticator.
-    platforms:
-      - ios
-
   V-220650:
     stig_id: CISC-L2-000030
     rule_id: SV-220650r539671
@@ -32,8 +15,6 @@ stig_rules:
       If VTP mode is off, this is not applicable.
     fix_text: >-
       Configure a VTP password using vtp password command.
-    platforms:
-      - ios
 
   V-220651:
     stig_id: CISC-L2-000040
@@ -50,8 +31,6 @@ stig_rules:
     fix_text: >-
       Configure a QoS policy-map and apply it to all switch ports
       using service-policy output command.
-    platforms:
-      - ios
 
   V-220656:
     stig_id: CISC-L2-000100
@@ -67,8 +46,6 @@ stig_rules:
       enabled on all access switch ports.
     fix_text: >-
       Configure spanning-tree bpduguard enable on all access ports.
-    platforms:
-      - ios
 
   V-220657:
     stig_id: CISC-L2-000110
@@ -83,8 +60,6 @@ stig_rules:
       enabled globally.
     fix_text: >-
       Configure spanning-tree loopguard default.
-    platforms:
-      - ios
 
   V-220665:
     stig_id: CISC-L2-000190
@@ -100,8 +75,6 @@ stig_rules:
       globally or on all interfaces.
     fix_text: >-
       Configure udld enable globally.
-    platforms:
-      - ios
 
   V-220666:
     stig_id: CISC-L2-000200
@@ -117,38 +90,3 @@ stig_rules:
       is configured on all trunk ports.
     fix_text: >-
       Configure switchport nonegotiate on all trunk ports.
-    platforms:
-      - ios
-
-  V-220662:
-    stig_id: CISC-L2-000160
-    rule_id: SV-220662r648766
-    severity: cat3
-    srg_id: SRG-NET-000362-L2S-000022
-    cci: CCI-002385
-    title: >-
-      The Cisco switch must have storm control configured on all
-      access ports
-    check_content: >-
-      Review the switch configuration to verify storm control is
-      configured on all host-facing access ports.
-    fix_text: >-
-      Configure storm-control broadcast and unicast on all access ports.
-    platforms:
-      - ios
-
-  V-220663:
-    stig_id: CISC-L2-000170
-    rule_id: SV-220663r929005
-    severity: cat3
-    srg_id: SRG-NET-000362-L2S-000023
-    cci: CCI-002385
-    title: >-
-      The Cisco switch must have IGMP Snooping enabled globally
-    check_content: >-
-      Review the switch configuration to verify IGMP snooping
-      is not disabled globally.
-    fix_text: >-
-      Enable IGMP snooping using ip igmp snooping.
-    platforms:
-      - ios

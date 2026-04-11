@@ -90,7 +90,7 @@ pre-commit install
 
 ## PR Checklist
 
-- [ ] Rule metadata added to `evaluate/vars/stig/rules.yaml`
+- [ ] Rule metadata added to `evaluate/vars/stig/<platform>/catN.yaml`
 - [ ] Task names and tags follow conventions
 - [ ] FQCNs used for all modules
 - [ ] `check_mode` works for evaluate tasks

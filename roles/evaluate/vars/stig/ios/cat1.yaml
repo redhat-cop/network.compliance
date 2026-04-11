@@ -1,0 +1,18 @@
+---
+# CAT I — High Severity — Cisco IOS-XE Layer 2 Switch STIG
+stig_rules:
+  V-220649:
+    stig_id: CISC-L2-000020
+    rule_id: SV-220649r863283
+    severity: cat1
+    srg_id: SRG-NET-000148-L2S-000015
+    cci: CCI-000778
+    title: >-
+      The Cisco switch must authenticate all endpoint devices before
+      establishing a network connection using bidirectional authentication
+    check_content: >-
+      Review the switch configuration to verify 802.1x authentication
+      is configured on all access switch ports.
+    fix_text: >-
+      Configure 802.1x on all access switch ports using
+      authentication port-control auto and dot1x pae authenticator.

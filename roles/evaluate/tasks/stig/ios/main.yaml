@@ -1,4 +1,10 @@
 ---
+- name: Load CAT I rule metadata
+  ansible.builtin.include_vars:
+    file: stig/ios/cat1.yaml
+    hash_behaviour: merge
+  when: compliance_evaluate.cat1 | default(true)
+
 - name: Include CAT I evaluation
   ansible.builtin.include_tasks:
     file: cat1.yaml
@@ -6,12 +12,24 @@
   tags:
     - cat1
 
+- name: Load CAT II rule metadata
+  ansible.builtin.include_vars:
+    file: stig/ios/cat2.yaml
+    hash_behaviour: merge
+  when: compliance_evaluate.cat2 | default(true)
+
 - name: Include CAT II evaluation
   ansible.builtin.include_tasks:
     file: cat2.yaml
   when: compliance_evaluate.cat2 | default(true)
   tags:
     - cat2
+
+- name: Load CAT III rule metadata
+  ansible.builtin.include_vars:
+    file: stig/ios/cat3.yaml
+    hash_behaviour: merge
+  when: compliance_evaluate.cat3 | default(true)
 
 - name: Include CAT III evaluation
   ansible.builtin.include_tasks:

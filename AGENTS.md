@@ -81,8 +81,10 @@ roles/
           cat3.yaml                # Low severity (CAT III)
     vars/
       stig/
-        rules.yaml                 # STIG rule metadata (IDs, severity, descriptions)
-        ios.yaml                   # Platform-specific golden baselines
+        ios/                       # Platform-specific rule metadata
+          cat1.yaml                # CAT I rules
+          cat2.yaml                # CAT II rules
+          cat3.yaml                # CAT III rules
     defaults/main.yaml
     meta/argument_specs.yml
 
@@ -283,7 +285,7 @@ See the `stig-rule-development` skill for the detailed step-by-step process.
 **Quick reference:**
 
 1. Identify the STIG rule (V-key, STIG ID, severity, SRG)
-2. Add rule metadata to `evaluate/vars/stig/rules.yaml`
+2. Add rule metadata to `evaluate/vars/stig/<platform>/cat<N>.yaml`
 3. Create evaluation task in `evaluate/tasks/stig/<platform>/cat<N>.yaml`
 4. Create golden baseline template in `evaluate/templates/stig/<platform>/`
 5. Create remediation task in `remediate/tasks/stig/<platform>/cat<N>.yaml`
@@ -351,7 +353,7 @@ dependencies:
 When reviewing PRs for this collection:
 
 ```text
-[ ] STIG rule metadata added to rules.yaml
+[ ] STIG rule metadata added to vars/stig/<platform>/catN.yaml
 [ ] Task names follow naming convention (STIG | ID | V-key | Severity | Description)
 [ ] Tags applied (STIG ID, V-key, severity, CCI)
 [ ] FQCNs used for all modules

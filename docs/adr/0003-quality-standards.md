@@ -36,7 +36,7 @@ All rules use `<os>_command` for evaluate and `<os>_config` for remediate — ev
 
 - **`classify_interfaces`** — interface-specific, runs once, low ROI.
 - **`check_config`** — would handle resource module structured data, unnecessary after standardizing on command modules.
-- **STIG metadata lookup** — `rules.yaml` loaded via `include_vars` is sufficient.
+- **STIG metadata lookup** — platform-specific `catN.yaml` files loaded via `include_vars` are sufficient.
 
 ### Validated Content Requirements
 

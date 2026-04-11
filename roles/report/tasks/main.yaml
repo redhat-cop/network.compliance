@@ -1,7 +1,14 @@
 ---
+- name: Resolve target platform
+  ansible.builtin.set_fact:
+    report_platform: >-
+      {{ compliance.platform | default(ansible_network_os | split('.') | last) }}
+
 - name: Load STIG rule metadata
   ansible.builtin.include_vars:
-    file: "{{ role_path }}/../evaluate/vars/stig/rules.yaml"
+    dir: "{{ role_path }}/../evaluate/vars/stig/{{ report_platform }}"
+    extensions: [yaml]
+    hash_behaviour: merge
 
 - name: Validate stig_results is available
   ansible.builtin.assert:

@@ -55,7 +55,7 @@ Port classification via `set_fact` (in-memory, no file writes):
 
 | File | Purpose |
 |------|---------|
-| `roles/evaluate/vars/stig/rules.yaml` | All 9 rules with V-key, STIG ID, Rule ID, severity, CCI, title, check/fix text |
+| `roles/evaluate/vars/stig/ios/cat{1,2,3}.yaml` | Rules per severity with V-key, STIG ID, Rule ID, CCI, title, check/fix text |
 | `roles/evaluate/defaults/main.yaml` | `stig_controls` per-rule toggles, `compliance_evaluate: { cat1: true, ... }` |
 | `roles/evaluate/meta/argument_specs.yml` | Variable documentation |
 | `roles/evaluate/tasks/main.yaml` | Load vars, init `stig_results: {}`, dispatch by framework/platform |
@@ -228,7 +228,7 @@ Report generation uses `to_cklb` and `to_xccdf` filter plugins instead of Jinja2
   when: compliance_report.format in ['xccdf', 'both']
 ```
 
-Adding a rule to `rules.yaml` automatically includes it in reports — the filters iterate `stig_rules` dynamically.
+Adding a rule to the appropriate `catN.yaml` file automatically includes it in reports — the filters iterate `stig_rules` dynamically.
 
 ### Phase 6: Molecule Testing
 
