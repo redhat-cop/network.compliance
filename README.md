@@ -1,6 +1,6 @@
 # Ansible Collection: network.compliance
 
-> **This project is under active development. APIs, role interfaces, and variable names may introduce breaking changes between releases until `1.0.0` is reached. Pin to a specific version if you depend on this collection.**
+> **This project is under active development and not ready for consumption. Expect unstable or breaking changes.**
 
 Ansible Validated Content collection that automates STIG (Security Technical Implementation Guide) compliance evaluation and remediation for network devices.
 
