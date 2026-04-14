@@ -1,5 +1,16 @@
 # Contributing to network.compliance
 
+## About this collection
+
+This is an [Ansible Validated Content](https://access.redhat.com/articles/ansible-automation-platform-certified-content) collection — a reference implementation that demonstrates best practices for automating STIG compliance workflows with Ansible.
+
+**What this means for contributors:**
+
+- This collection serves as a baseline that partners and vendors can use to build their own customizations, extend platform support, or learn from the patterns.
+- Contributions that improve the reference implementation (new STIG rules, new platforms, bug fixes, documentation) are welcome via pull requests.
+- The specs-driven approach (`docs/specs/`) is used to validate whether structured specifications can generate high-quality Ansible validated content code, and whether agent skills (`.agents/skills/`) can help partners and vendors extend collection capabilities.
+- All contributions must meet the [validated content quality bar](docs/adr/0003-quality-standards.md): production-grade linting, full test coverage, argument specs, and idempotent remediation.
+
 ## Setting up the development environment
 
 ```bash

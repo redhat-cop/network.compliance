@@ -2,7 +2,11 @@
 
 > **This project is under active development and not ready for consumption. Expect unstable or breaking changes.**
 
-Ansible Validated Content collection that automates STIG (Security Technical Implementation Guide) compliance evaluation and remediation for network devices.
+## What is this collection?
+
+This is an [Ansible Validated Content](https://access.redhat.com/articles/ansible-automation-platform-certified-content) collection that automates STIG (Security Technical Implementation Guide) compliance evaluation and remediation for network devices.
+
+**Validated content** is a reference implementation — it provides production-quality roles, plugins, and playbooks that demonstrate best practices for automating compliance workflows with Ansible. Partners and vendors can use this as a baseline to build their own customizations, extend platform support, or learn from the patterns used here. See the [Ansible Validated Content documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.3/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/assembly-validated-content) for more about what validated content means in the Ansible ecosystem.
 
 ## Overview
 
@@ -180,10 +184,11 @@ conventions, CI checks, and PR checklist.
 
 ## References
 
+- [Ansible Certified and Validated Content](https://access.redhat.com/articles/ansible-automation-platform-certified-content)
+- [Ansible Validated Content documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.3/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/assembly-validated-content)
 - [DISA STIG Library](https://public.cyber.mil/stigs/)
 - [STIG Viewer](https://www.stigviewer.com/stigs)
 - [STIG Manager](https://github.com/NUWCDIVNPT/stig-manager)
-- [Ansible Validated Content](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.3/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/assembly-validated-content)
 - [Molecule](https://github.com/ansible/molecule)
 
 ## License
