@@ -65,8 +65,10 @@ Each role resolves the platform from `compliance.platform` or derives it from `a
 roles/
   scan/
     tasks/
-      main.yaml                    # Dispatches by platform
-      ios.yaml                     # Cisco IOS/IOS-XE discovery
+      main.yaml                    # Dispatches by framework + platform
+      stig/
+        ios/
+          main.yaml                # Cisco IOS/IOS-XE discovery
     defaults/main.yaml
     meta/argument_specs.yml
 

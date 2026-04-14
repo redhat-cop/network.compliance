@@ -4,6 +4,6 @@
     scan_platform: >-
       {{ compliance.platform | default(ansible_network_os | split('.') | last) }}
 
-- name: Include platform-specific scan tasks
+- name: Include framework and platform scan tasks
   ansible.builtin.include_tasks:
-    file: "{{ scan_platform }}.yaml"
+    file: "{{ compliance.framework | default('stig') }}/{{ scan_platform }}/main.yaml"
