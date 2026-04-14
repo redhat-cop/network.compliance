@@ -1,6 +1,25 @@
 ---
 # CAT II — Medium Severity — Cisco IOS-XE Layer 2 Switch STIG
+# Source: U_Cisco_IOS-XE_Switch_L2S_STIG_V3R2_Manual-xccdf.xml
 stig_rules:
+  V-220659:
+    stig_id: CISC-L2-000130
+    rule_id: SV-220659r928999
+    severity: cat2
+    srg_id: SRG-NET-000362-L2S-000025
+    cci: CCI-002385
+    title: >-
+      The Cisco switch must have DHCP snooping for all user VLANs
+      to validate DHCP messages from untrusted sources
+    check_content: >-
+      Review the switch configuration and verify that DHCP snooping
+      is enabled on all user VLANs. If the switch does not have DHCP
+      snooping enabled for all user VLANs to validate DHCP messages
+      from untrusted sources, this is a finding.
+    fix_text: >-
+      Configure the switch to have DHCP snooping for all user VLANs.
+      Example: ip dhcp snooping and ip dhcp snooping vlan <user-vlans>.
+
   V-220650:
     stig_id: CISC-L2-000030
     rule_id: SV-220650r539671

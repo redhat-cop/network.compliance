@@ -1,6 +1,24 @@
 ---
 # CAT II — Medium Severity
 
+# V-220659: DHCP snooping on all user VLANs
+- name: >-
+    STIG | CISC-L2-000130 | V-220659 | CAT-II |
+    Enable DHCP snooping on user VLANs
+  when:
+    - stig_controls['V-220659'].run | default(false)
+    - stig_results['V-220659'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-L2-000130
+    - V-220659
+    - SV-220659r928999
+    - cat2
+    - CCI-002385
+  cisco.ios.ios_config:
+    lines:
+      - ip dhcp snooping
+    save_when: changed
+
 # V-220650: VTP password
 - name: >-
     STIG | CISC-L2-000030 | V-220650 | CAT-II |
