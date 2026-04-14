@@ -71,22 +71,27 @@ See `docs/adr/0002-conventions-and-data-model.md` for the full variable structur
 
 ### Step 1: Add rule metadata to `roles/evaluate/vars/stig/<platform>/catN.yaml`
 
+The file path determines the platform and severity — no `platforms` field needed.
+
 ```yaml
+# In roles/evaluate/vars/stig/ios/cat2.yaml (platform=ios, severity=cat2)
+# Source: U_Cisco_IOS-XE_Switch_L2S_STIG_V3R2_Manual-xccdf.xml
 stig_rules:
-  V-220649:
-    stig_id: CISC-L2-000020
-    rule_id: SV-220649r863283
-    severity: cat1
-    srg_id: SRG-NET-000148-L2S-000015
-    cci: CCI-000044
-    title: "The Cisco switch must authenticate all endpoint devices..."
-    check_content: |
-      Review the switch configuration to verify 802.1x...
-    fix_text: |
-      Configure 802.1x on all access switch ports...
-    platforms:
-      - ios
-      - junos
+  V-220659:
+    stig_id: CISC-L2-000130
+    rule_id: SV-220659r928999
+    severity: cat2
+    srg_id: SRG-NET-000362-L2S-000025
+    cci: CCI-002385
+    title: >-
+      The Cisco switch must have DHCP snooping for all user VLANs
+      to validate DHCP messages from untrusted sources
+    check_content: >-
+      Review the switch configuration and verify that DHCP snooping
+      is enabled on all user VLANs.
+    fix_text: >-
+      Configure the switch to have DHCP snooping for all user VLANs.
+      Example: ip dhcp snooping and ip dhcp snooping vlan <user-vlans>.
 ```
 
 ### Step 2: Add default variables to `roles/evaluate/defaults/main.yaml`
@@ -143,33 +148,51 @@ with `ansible.utils.fact_diff`. See [references/evaluation-examples.md](referenc
 
 ### Step 5: Create remediation task at `roles/remediate/tasks/stig/<platform>/catN.yaml`
 
-All rules use `<os>_config` for remediation. Gate on `stig_results[V-key].status == 'open'`:
+All rules use `<os>_config` for remediation. Gate on `stig_results[V-key].status == 'open'`.
+
+**For global config** (single command, no template needed):
 
 ```yaml
 - name: >-
-    STIG | CISC-L2-000020 | V-220649 | CAT-I |
-    Configure 802.1x authentication on access ports
+    STIG | CISC-L2-000130 | V-220659 | CAT-II |
+    Enable DHCP snooping on user VLANs
   when:
-    - stig_controls['V-220649'].run | default(false)
-    - stig_results['V-220649'].status | default('not_reviewed') == 'open'
-  tags: [CISC-L2-000020, V-220649, cat1]
+    - stig_controls['V-220659'].run | default(false)
+    - stig_results['V-220659'].status | default('not_reviewed') == 'open'
+  tags: [CISC-L2-000130, V-220659, cat2]
   cisco.ios.ios_config:
-    src: "stig/ios/remediate_v220649.j2"
+    lines:
+      - ip dhcp snooping
+    save_when: changed
+```
+
+**For per-interface config** (uses a Jinja2 template):
+
+```yaml
+- name: >-
+    STIG | CISC-L2-000100 | V-220656 | CAT-II |
+    Configure BPDU Guard on access ports
+  when:
+    - stig_controls['V-220656'].run | default(false)
+    - stig_results['V-220656'].status | default('not_reviewed') == 'open'
+  tags: [CISC-L2-000100, V-220656, cat2]
+  cisco.ios.ios_config:
+    src: "stig/ios/remediate_v220656.j2"
     save_when: changed
 ```
 
 Use `block/rescue` for lockout-risk operations (802.1x, SSH, AAA).
 
-### Step 6: Create remediation template
+### Step 6: Create remediation template (if per-interface)
+
+Only needed for per-interface rules. Not needed for global config (use `lines:` instead).
 
 At `roles/remediate/templates/stig/<platform>/remediate_vNNNNNN.j2`:
 
 ```jinja2
 {% for port in compliance_access_ports %}
 interface {{ port.name }}
- authentication port-control auto
- dot1x pae authenticator
- authentication host-mode {{ stig_controls['V-220649'].auth_hostmode }}
+ spanning-tree bpduguard enable
 {% endfor %}
 ```
 
@@ -181,26 +204,22 @@ Scenario names follow `<role>-<framework>-<platform>` convention.
 ### Step 8: Run quality checks
 
 ```bash
-tox -e lint
-ansible-test sanity -v --docker default
-molecule test -s evaluate-stig-<platform>
+tox -e fix    # auto-fix lint and format issues
+tox -e ci     # run all CI checks locally
 ```
 
 ## Checklist
 
 ```text
+[ ] STIG metadata verified against official DISA XCCDF source (not from memory)
+[ ] XCCDF source file cited in vars comment
 [ ] Rule metadata in evaluate/vars/stig/<platform>/catN.yaml
 [ ] Default variables in evaluate/defaults/main.yaml
-[ ] argument_specs.yml updated
-[ ] Evaluation task using evaluate_results filter with correct naming and tags
-[ ] Golden baseline template (if using fact_diff)
+[ ] Evaluation task using evaluate_results or stig_result filter
 [ ] Remediation task (conditional on stig_results status)
-[ ] Remediation template (Jinja2)
-[ ] Molecule scenario (converge.yaml + verify.yaml)
-[ ] check_mode works for evaluation
-[ ] Remediation is idempotent
-[ ] no_log on sensitive values
+[ ] Remediation template (per-interface rules) or inline lines (global config)
 [ ] Changelog fragment added
+[ ] tox -e ci passes locally
 ```
 
 ## References
