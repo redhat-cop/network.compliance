@@ -36,22 +36,25 @@ Identify what type of change this is:
 - **Bug fix** → Verify the fix and check for regressions
 - **Refactor** → Ensure no functional changes
 
-### Step 2: Verify STIG metadata
+### Step 2: Verify STIG metadata against DISA source
 
-For any new STIG rule, check `evaluate/vars/stig/<platform>/catN.yaml`:
+For any new STIG rule, verify `evaluate/vars/stig/<platform>/catN.yaml`
+against the official DISA STIG guide. **Do not approve metadata that
+has not been cross-referenced with the authoritative source.** AI
+agents may generate plausible but inaccurate STIG identifiers.
 
 ```text
 [ ] V-key is correct and matches DISA source
 [ ] STIG ID matches (e.g., CISC-L2-000020)
-[ ] Rule ID with revision is accurate
+[ ] Rule ID with revision is accurate (check revision number)
 [ ] Severity category is correct (cat1/cat2/cat3)
-[ ] SRG ID is present
-[ ] CCI is present
-[ ] Check content matches DISA STIG guide
-[ ] Fix text matches DISA STIG guide
+[ ] SRG ID is present and verified
+[ ] CCI is present and verified
+[ ] Check content matches DISA STIG guide verbatim
+[ ] Fix text matches DISA STIG guide verbatim
 ```
 
-Cross-reference with: https://public.cyber.mil/stigs/
+Cross-reference with: https://public.cyber.mil/stigs/ or STIG Viewer
 
 ### Step 3: Verify task conventions
 

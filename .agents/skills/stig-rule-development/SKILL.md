@@ -22,14 +22,18 @@ Use this skill when:
 
 ## Prerequisites
 
-Before starting, gather:
+Before starting, gather the following from the official
+[DISA STIG Library](https://public.cyber.mil/stigs/) or STIG Viewer.
+**Do not use metadata from memory or AI-generated content without
+verifying it against the authoritative DISA source.**
+
 1. The STIG rule's **V-key** (e.g., V-220649)
 2. The **STIG ID** (e.g., CISC-L2-000020)
 3. The **Rule ID with revision** (e.g., SV-220649r863283)
 4. The **severity category** (CAT-I, CAT-II, CAT-III)
 5. The **SRG ID** (e.g., SRG-NET-000148-L2S-000015)
 6. The **CCI** (e.g., CCI-000044)
-7. The **check content** and **fix text** from the STIG guide
+7. The **check content** and **fix text** — copy verbatim from the STIG guide
 8. The target **platform** (ios, eos, junos, nxos, etc.)
 
 ## How a DISA STIG rule maps to Ansible
