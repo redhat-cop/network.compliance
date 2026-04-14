@@ -16,6 +16,8 @@ stig_controls:
   V-220649:
     run: true
     auth_hostmode: "single-host"
+  V-220659:
+    run: true
   V-220650:
     run: true
   V-220651:
