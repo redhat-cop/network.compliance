@@ -44,8 +44,8 @@ Separate roles also enable audit-only mode (run evaluate without remediate) and 
 ```text
 roles/
 ├── scan/tasks/
-│   ├── main.yaml                        # dispatch to <platform>.yaml
-│   └── ios.yaml
+│   ├── main.yaml                        # dispatch to <framework>/<platform>/
+│   └── stig/ios/main.yaml
 ├── evaluate/tasks/
 │   ├── main.yaml                        # dispatch to <framework>/<platform>/
 │   ├── stig/ios/{main,cat1,cat2,cat3}.yaml

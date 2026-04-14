@@ -12,7 +12,7 @@ This collection ships as Ansible Validated Content with a production-grade quali
 
 ### Custom Filter Plugins
 
-Five filter plugins in `plugins/filter/compliance.py` to simplify evaluation, reporting, and eliminate repeated Jinja2 boilerplate.
+Six filter plugins in `plugins/filter/compliance.py` to simplify evaluation, reporting, and eliminate repeated Jinja2 boilerplate.
 
 **Building blocks** (usable independently):
 
@@ -27,6 +27,7 @@ Five filter plugins in `plugins/filter/compliance.py` to simplify evaluation, re
 
 - **`to_cklb`** — takes `stig_results` + `stig_rules`, returns CKLB JSON string. Replaces Jinja2 template.
 - **`to_xccdf`** — takes `stig_results` + `stig_rules`, returns XCCDF 1.2 XML string. Replaces Jinja2 template.
+- **`compliance_summary`** — takes `stig_results` dict, returns `{total, passed, open, not_reviewed}` counts for readable summaries.
 
 ### Standardize on Command Modules
 

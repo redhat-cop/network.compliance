@@ -41,7 +41,7 @@ dependencies:
 
 ### Step 2: Add scan role support
 
-Create `roles/scan/tasks/<platform>.yaml`:
+Create `roles/scan/tasks/stig/<platform>/main.yaml`:
 
 ```yaml
 # roles/scan/tasks/eos.yaml
@@ -69,9 +69,9 @@ Create `roles/scan/tasks/<platform>.yaml`:
 Update `roles/scan/tasks/main.yaml` to include the new platform:
 
 ```yaml
-- name: Include platform-specific scan tasks
+- name: Include framework and platform scan tasks
   ansible.builtin.include_tasks:
-    file: "{{ scan_platform }}.yaml"
+    file: "{{ compliance.framework | default('stig') }}/{{ scan_platform }}/main.yaml"
 ```
 
 ### Step 3: Create evaluate task structure

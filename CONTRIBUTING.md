@@ -111,6 +111,7 @@ pre-commit install
 
 ## PR Checklist
 
+- [ ] STIG metadata verified against official DISA XCCDF source
 - [ ] Rule metadata added to `evaluate/vars/stig/<platform>/catN.yaml`
 - [ ] Task names and tags follow conventions
 - [ ] FQCNs used for all modules

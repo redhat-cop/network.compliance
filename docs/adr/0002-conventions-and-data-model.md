@@ -27,7 +27,6 @@ stig_rules:
       Review the switch configuration...
     fix_text: |
       Configure 802.1x on all access switch ports...
-    platforms: [ios, junos]
 ```
 
 ### Task Naming

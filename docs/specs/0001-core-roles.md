@@ -40,7 +40,7 @@ Implement the four-phase lifecycle (scan, evaluate, remediate, report) for the C
 
 | File | Purpose |
 |------|---------|
-| `roles/scan/tasks/main.yaml` | Derive `scan_platform` from `compliance.platform` or `ansible_network_os`, dispatch to `<platform>.yaml` |
+| `roles/scan/tasks/main.yaml` | Derive `scan_platform` from `compliance.platform` or `ansible_network_os`, dispatch to `<framework>/<platform>/main.yaml` |
 | `roles/scan/tasks/ios.yaml` | `cisco.ios.ios_facts` with `gather_network_resources: [l2_interfaces]`, classify ports |
 | `roles/scan/defaults/main.yaml` | Default variable values |
 | `roles/scan/meta/argument_specs.yml` | Variable documentation |
@@ -110,7 +110,7 @@ The `evaluate_results` filter handles everything: extract non-compliant items, b
 | `plugins/filter/compliance.py` | Collection filter plugins |
 | `tests/unit/plugins/filter/test_compliance.py` | Unit tests |
 
-Five filter plugins, three layers:
+Six filter plugins, three layers:
 
 **Building blocks** (usable independently for non-standard cases):
 
@@ -168,6 +168,15 @@ Five filter plugins, three layers:
      rules=stig_rules,
      hostname=inventory_hostname,
      ip_address=ansible_host) }}
+```
+
+**Summary:**
+
+`compliance_summary` — generate counts from `stig_results`
+
+```yaml
+{{ stig_results | network.compliance.compliance_summary }}
+# -> { total: 9, passed: 7, open: 1, not_reviewed: 1 }
 ```
 
 ### Phase 4: Remediate Role

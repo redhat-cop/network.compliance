@@ -41,7 +41,7 @@ scan → evaluate → remediate → report
 
 | Role | Purpose | OS-Dependent? | Framework-Dependent? |
 |------|---------|---------------|---------------------|
-| `scan` | Discover device state, classify interfaces | Yes | No |
+| `scan` | Discover device state, classify interfaces | Yes | Yes |
 | `evaluate` | Read-only audit against compliance rules | Yes | Yes |
 | `remediate` | Apply compliant configurations | Yes | Yes |
 | `report` | Generate CKLB/XCCDF artifacts | Minimal | Yes |
@@ -116,6 +116,7 @@ plugins/
     evaluate_results.yml
     to_cklb.yml
     to_xccdf.yml
+    compliance_summary.yml
 ```
 
 ## Conventions
@@ -292,7 +293,7 @@ See the `stig-rule-development` skill for the detailed step-by-step process.
 4. Create golden baseline template in `evaluate/templates/stig/<platform>/`
 5. Create remediation task in `remediate/tasks/stig/<platform>/cat<N>.yaml`
 6. Create remediation template in `remediate/templates/stig/<platform>/`
-7. Update report template to include the new rule
+7. New rules are automatically included in reports via filter plugins
 8. Add tags (STIG ID, V-key, severity, CCI)
 9. Write integration test
 10. Update `argument_specs.yml` with any new variables

@@ -42,16 +42,56 @@ jobs:
 ```ini
 # tox.ini
 [tox]
-envlist = lint, molecule
+env_list = ci, fix, lint, unit, ruff, sanity, gitleaks, pre-commit, molecule
+skip_missing_interpreters = true
+
+[testenv]
+deps = ansible-dev-tools
+skip_install = true
+
+[testenv:ci]
+description = Run all CI checks locally
+deps =
+    ansible-dev-tools
+    pytest
+    pytest-ansible
+    ruff
+commands =
+    ansible-lint
+    ruff check plugins/ tests/
+    ruff format --check plugins/ tests/
+    pytest tests/unit/ -v --color=yes
+
+[testenv:fix]
+description = Auto-fix lint and format issues
+deps =
+    ansible-dev-tools
+    ruff
+commands =
+    ruff check plugins/ tests/ --fix
+    ruff format plugins/ tests/
+    ansible-lint --fix
 
 [testenv:lint]
-deps = ansible-dev-tools
+description = Run ansible-lint
+commands = ansible-lint
+
+[testenv:unit]
+description = Run unit tests
+deps =
+    ansible-dev-tools
+    pytest
+    pytest-ansible
+commands = pytest tests/unit/ -v --color=yes
+
+[testenv:ruff]
+description = Python lint and format check
+deps = ruff
 commands =
-    ansible-lint roles/
-    yamllint roles/
+    ruff check plugins/ tests/
+    ruff format --check plugins/ tests/
 
 [testenv:molecule]
-deps = ansible-dev-tools
-commands =
-    molecule test --all
+description = Run all Molecule scenarios
+commands = molecule test --all
 ```

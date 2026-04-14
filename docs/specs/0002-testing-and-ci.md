@@ -101,8 +101,14 @@ All scenarios use `ansible_connection: local` with pre-populated facts. No real 
 ### CI orchestration
 
 ```bash
-tox -e lint                    # ansible-lint (production profile) + yamllint
+tox -e fix                     # auto-fix lint and format issues
+tox -e ci                      # all fast CI checks combined
+tox -e lint                    # ansible-lint (production profile)
+tox -e unit                    # unit tests (filter plugins)
+tox -e ruff                    # Python lint + format check
 tox -e sanity                  # ansible-test sanity
+tox -e gitleaks                # secret scanning
+tox -e pre-commit              # all pre-commit hooks
 tox -e molecule                # all Molecule scenarios
 ```
 
