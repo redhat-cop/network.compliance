@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Add STIG CAT I rule V-220518 (CISC-ND-000010) - VTY session limit for Cisco IOS.
