@@ -1,6 +1,23 @@
 ---
-# CAT I — High Severity — Cisco IOS-XE Layer 2 Switch STIG
+# CAT I — High Severity — Cisco IOS-XE STIG
 stig_rules:
+  V-220518:
+    stig_id: CISC-ND-000010
+    rule_id: SV-220518r879587
+    severity: cat1
+    srg_id: SRG-APP-000001-NDM-000200
+    cci: CCI-000054
+    title: >-
+      The Cisco router must be configured to limit the number of
+      concurrent management sessions to an organization-defined number
+    check_content: >-
+      Review the router configuration to verify the number of
+      concurrent management sessions is limited. Check that VTY
+      lines have session-limit configured.
+    fix_text: >-
+      Configure the router to limit the number of concurrent
+      management sessions by setting session-limit on VTY lines.
+
   V-220649:
     stig_id: CISC-L2-000020
     rule_id: SV-220649r863283

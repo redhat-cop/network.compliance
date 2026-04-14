@@ -13,6 +13,9 @@ compliance_voice_ports: []
 compliance_trunk_ports: []
 
 stig_controls:
+  V-220518:
+    run: true
+    session_limit: 2
   V-220649:
     run: true
     auth_hostmode: "single-host"

@@ -1,0 +1,6 @@
+line vty 0 4
+ session-limit {{ stig_controls['V-220518'].session_limit | default(2) }}
+ transport input ssh
+line vty 5 15
+ session-limit {{ stig_controls['V-220518'].session_limit | default(2) }}
+ transport input ssh

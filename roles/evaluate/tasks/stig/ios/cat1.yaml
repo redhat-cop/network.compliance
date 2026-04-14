@@ -1,6 +1,35 @@
 ---
 # CAT I — High Severity
 
+# V-220518: Limit concurrent management sessions (VTY session-limit)
+- name: >-
+    STIG | CISC-ND-000010 | V-220518 | CAT-I |
+    Verify VTY session limit is configured
+  when: stig_controls['V-220518'].run | default(false)
+  tags:
+    - CISC-ND-000010
+    - V-220518
+    - SV-220518r879587
+    - cat1
+    - CCI-000054
+  block:
+    - name: Check VTY line configuration for session-limit
+      cisco.ios.ios_command:
+        commands:
+          - "show run | section line vty"
+      register: _evaluate_vty_session
+
+    - name: Evaluate VTY session limit compliance
+      ansible.builtin.set_fact:
+        stig_results: >-
+          {{ stig_results | default({}) | combine({
+               'V-220518': ([] if "session-limit" in _evaluate_vty_session.stdout[0]
+                 else ["VTY session-limit not configured"])
+               | network.compliance.stig_result(
+                   pass_msg='VTY session limit is configured',
+                   fail_msg='VTY session limit issue: {}')
+             }) }}
+
 # V-220649: 802.1x authentication on access/voice ports
 - name: >-
     STIG | CISC-L2-000020 | V-220649 | CAT-I |

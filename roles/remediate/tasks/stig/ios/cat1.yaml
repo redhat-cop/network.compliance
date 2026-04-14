@@ -1,6 +1,23 @@
 ---
 # CAT I — High Severity
 
+# V-220518: Limit concurrent management sessions (VTY session-limit)
+- name: >-
+    STIG | CISC-ND-000010 | V-220518 | CAT-I |
+    Configure VTY session limit
+  when:
+    - stig_controls['V-220518'].run | default(false)
+    - stig_results['V-220518'].status | default('not_reviewed') == 'open'
+  tags:
+    - CISC-ND-000010
+    - V-220518
+    - SV-220518r879587
+    - cat1
+    - CCI-000054
+  cisco.ios.ios_config:
+    src: stig/ios/remediate_v220518.j2
+    save_when: changed
+
 # V-220649: 802.1x authentication on access/voice ports
 - name: >-
     STIG | CISC-L2-000020 | V-220649 | CAT-I |
