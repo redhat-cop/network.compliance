@@ -228,21 +228,125 @@ policies/stig/
 | **Embedded** | Python `opa` library in a custom Ansible module | Python package |
 | **Hybrid** | Current filter plugins as default, OPA as optional upgrade | Optional |
 
+### Input Schema Documentation for Policy Authors
+
+Policy authors need a documented, validated schema for the input JSON. Three layers:
+
+**1. JSON Schema file** (`policies/schemas/ios_xe_l2s.json`): Machine-readable, used by OPA type checker and for runtime validation.
+
+**2. OPA metadata annotations** in Rego files: OPA supports [schema annotations](https://www.openpolicyagent.org/docs/latest/policy-language/#metadata) natively:
+
+```rego
+# METADATA
+# title: Cisco IOS-XE L2S STIG Evaluation
+# description: Evaluates L2S STIG rules against normalized device config
+# schemas:
+#   - input: schema.ios_xe_l2s
+# custom:
+#   stig_version: "V3R2"
+#   source: "U_Cisco_IOS-XE_Switch_L2S_STIG_V3R2_Manual-xccdf.xml"
+package stig.ios_xe.l2s
+```
+
+Supported scopes: `rule`, `document`, `package`, `subpackages`. OPA validates input against the schema during `opa eval` and `opa check`, catching missing or mistyped fields before runtime.
+
+**3. Schema docs in markdown** (`policies/schemas/README.md`): Human-readable reference showing all available fields, types, and examples.
+
+### Custom Policy Support
+
+Users bring their own `.rego` files:
+
+```yaml
+compliance_evaluate:
+  engine: opa
+  opa:
+    policy_dir: /path/to/my/custom/policies
+    schema_validation: true
+```
+
+The collection ships default policies under `policies/`. Users override with their own directory. The `opa_eval` lookup plugin validates custom policy input against the published JSON schema before evaluation, giving a clear error if the input doesn't match.
+
+### Proposed File Structure
+
+```text
+policies/
+├── schemas/
+│   ├── ios_xe_l2s.json              # JSON Schema for IOS-XE L2S input
+│   └── README.md                    # Schema docs for policy authors
+├── stig/
+│   └── ios_xe/
+│       └── l2s/
+│           ├── cat1.rego            # CAT I rules
+│           ├── cat2.rego            # CAT II rules
+│           ├── cat3.rego            # CAT III rules
+│           ├── l2s_complete.rego    # Aggregator
+│           └── l2s_test.rego        # opa test
+└── examples/
+    └── custom_rule.rego             # Example for custom policy authors
+```
+
+### Pluggable Evaluation Engine
+
+The evaluation engine is configurable:
+
+```yaml
+compliance_evaluate:
+  engine: native    # default: current filter plugin approach
+  # engine: opa     # alternative: OPA binary or server
+  cat1: true
+  cat2: true
+  cat3: true
+```
+
+The evaluate role dispatches based on engine:
+
+```yaml
+# native engine: per-rule ios_command + filter plugins (current)
+# opa engine: gather full config + normalize + opa eval (new)
+```
+
+Both engines produce the same `stig_results` contract so remediate and report roles work unchanged.
+
+### OPA Lookup Plugin
+
+A lookup plugin supports both OPA binary and server modes:
+
+```yaml
+# Binary mode (offline, no server needed)
+stig_results: >-
+  {{ lookup('network.compliance.opa',
+       input=device_state,
+       policy_dir='policies/stig/ios_xe/l2s',
+       query='data.stig.ios_xe.l2s.stig_results') }}
+
+# Server mode (shared OPA instance)
+stig_results: >-
+  {{ lookup('network.compliance.opa',
+       input=device_state,
+       server_url='http://opa:8181',
+       query='data.stig.ios_xe.l2s.stig_results') }}
+```
+
 ## Recommendations
 
-1. **Start with hybrid approach** — keep current filter plugins as the default evaluation path, add OPA as an optional alternative for users who want policy-as-code separation.
+1. **Start with hybrid approach** — keep current filter plugins as the default evaluation path (`engine: native`), add OPA as an optional alternative (`engine: opa`) for users who want policy-as-code separation.
 
 2. **Build `normalize_config` filter first** — this is needed regardless of OPA. Converting CLI output to structured JSON is valuable on its own (improves testability, enables fact_diff comparisons).
 
-3. **Write STIG L2S policies in Rego** — port the existing 9+1 rules to Rego as a proof of concept. Use the finding object pattern from the rego_policy_libraries STIG examples.
+3. **Define and publish the input JSON schema** — this is the contract between Ansible (producer) and Rego (consumer). Document it with JSON Schema + markdown + OPA annotations.
 
-4. **Keep the same `stig_results` contract** — OPA findings should produce the same `{status, findings, detail}` structure so remediate and report roles work unchanged.
+4. **Write STIG L2S policies in Rego** — port the existing 10 rules to Rego as a proof of concept. Use the finding object pattern from the rego_policy_libraries STIG examples.
 
-5. **Ship policies in the collection** — include `.rego` files under `policies/` in the collection tarball. Users can load them into their own OPA instance or use the local binary.
+5. **Keep the same `stig_results` contract** — OPA findings should produce the same `{status, findings, detail}` structure so remediate and report roles work unchanged.
+
+6. **Ship policies in the collection** — include `.rego` files under `policies/` in the collection tarball. Users can load them into their own OPA instance or use the local binary.
+
+7. **Support custom policies** — allow users to point to their own policy directory. Validate their input against the published schema.
 
 ## References
 
-- [rego_policy_libraries](https://github.com/ansible/rego_policy_libraries) — 363+ production-ready OPA policies
+- rego_policy_libraries — community Rego/OPA policy collection (363+ production-ready policies)
 - [Open Policy Agent](https://www.openpolicyagent.org/)
 - [Rego Language Reference](https://www.openpolicyagent.org/docs/latest/policy-language/)
-- [OPA Ansible Integration](https://www.openpolicyagent.org/docs/latest/integration/)
+- [OPA Metadata Annotations](https://www.openpolicyagent.org/docs/latest/policy-language/#metadata) — schema annotations, scopes, type checking
+- [OPA Integration Guide](https://www.openpolicyagent.org/docs/latest/integration/)

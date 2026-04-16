@@ -2,7 +2,7 @@
 
 ## Summary
 
-Analyzed the in-development STIG-CISCO-IOS-XE-L2S repo to extract reusable patterns and identify improvements for the network.compliance collection.
+Analyzed an in-development Cisco IOS-XE Layer 2 Switch STIG reference implementation to extract reusable patterns and identify improvements for the network.compliance collection.
 
 ## Findings
 
@@ -36,4 +36,4 @@ Analyzed the in-development STIG-CISCO-IOS-XE-L2S repo to extract reusable patte
 
 ## References
 
-- Source: `STIG-CISCO-IOS-XE-L2S` (in development, not production-ready)
+- Based on publicly available Rego/OPA policy patterns and DISA STIG guides
